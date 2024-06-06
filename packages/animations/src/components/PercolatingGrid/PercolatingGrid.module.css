@@ -1,0 +1,10 @@
+.grid {
+  display: flex;
+}
+
+.hovered-node {
+  position: absolute;
+  background: hsl(0deg 0% 100% / 0.2);
+  z-index: 1;
+  pointer-events: none;
+}
