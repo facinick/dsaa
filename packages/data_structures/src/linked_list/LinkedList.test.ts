@@ -17,7 +17,6 @@ describe('LinkedList Tests', () => {
   describe('Insertion', () => {
     test('Insertion at the beginning of the list', () => {
       ll.insertAtHead(5);
-      ll.print();
       expect(ll.getSize()).toBe(1);
       expect(ll.isEmpty()).toBe(false);
       expect(ll.search(5)).toBe(5);

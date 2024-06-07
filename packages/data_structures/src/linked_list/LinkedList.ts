@@ -1,30 +1,56 @@
 import { Node } from "./Node";
 
-// head: root (either null or a node with next === null / another node)
-// length: SIZE = [0... SIZE-1]
-
+/**
+ * Represents a singly linked list.
+ *
+ * @template T The type of elements in the list.
+ */
 class LinkedList<T> {
   private size: number;
   private head: Node<T> | null;
   private comparator: (a: T, b: T) => -1 | 0 | 1;
 
+  /**
+   * Constructs a new linked list with the specified comparator function.
+   *
+   * @param {(a: T, b: T) => -1 | 0 | 1} comparator - The function used for comparing elements. Function returns -1 to select a, 0 to equate and 1 to select b.
+   */
   constructor(comparator: (a: T, b: T) => -1 | 0 | 1) {
     this.head = null;
     this.size = 0;
     this.comparator = comparator
   }
 
-  // insert at SIZE (insertAtTail)
+  /**
+   * Inserts an element at the tail (end) of the list.
+   *
+   * @template T The type of elements in the list.
+   * @param {T} element - The element to insert.
+   * @returns {boolean} Returns true if the insertion is successful, otherwise false.
+   */
   insertAtTail(element: T): boolean {
     return this.insertAtIndex(this.size, element)
   }
 
-  // insert at 0 (insertAtHead)
+  /**
+   * Inserts an element at the head (beginning) of the list.
+   *
+   * @template T The type of elements in the list.
+   * @param {T} element - The element to insert.
+   * @returns {boolean} Returns true if the insertion is successful, otherwise false.
+   */
   insertAtHead(element: T): boolean {
     return this.insertAtIndex(0, element)
   }
 
-  // insert at x
+  /**
+   * Inserts an element at a specified index in the list.
+   *
+   * @template T The type of elements in the list.
+   * @param {number} index - The position at which to insert the element. Must be between 0 and the size of the list (inclusive).
+   * @param {T} element - The element to insert.
+   * @returns {boolean} Returns true if the insertion is successful, otherwise false.
+   */
   insertAtIndex(index: number, element: T): boolean {
     if (index < 0 || index > this.size) {
       return false;
@@ -58,7 +84,13 @@ class LinkedList<T> {
     return true;
   }
 
-  // remove at x
+  /**
+   * Deletes the element at the specified index in the list.
+   *
+   * @template T The type of elements in the list.
+   * @param {number} index - The position of the element to delete. Must be between 0 and the size of the list (exclusive).
+   * @returns {T | null} Returns the removed element if the deletion is successful, otherwise null.
+   */
   deleteAtIndex(index: number): T | null {
     if (index < 0 || index >= this.size) {
       return null;
@@ -67,7 +99,7 @@ class LinkedList<T> {
     let removedElement: T;
 
     if (index === 0) {
-      if(! this.head) {
+      if (!this.head) {
         return null;
       }
       removedElement = this.head.value
@@ -84,7 +116,7 @@ class LinkedList<T> {
         counter++;
       }
 
-      if(!current) {
+      if (!current) {
         return null;
       }
 
@@ -99,42 +131,51 @@ class LinkedList<T> {
     return removedElement;
   }
 
-  // remove at SIZE-1 (deleteAtTail)
+  /**
+   * Deletes the element at the tail (end) of the list.
+   *
+   * @template T The type of elements in the list.
+   * @returns {T | null} Returns the removed element if the deletion is successful, otherwise null.
+   */
   deleteAtTail(): T | null {
     return this.deleteAtIndex(this.size - 1)
   }
 
-  // remove at 0 (deleteAtHead)
+  /**
+   * Deletes the element at the head (beginning) of the list.
+   *
+   * @template T The type of elements in the list.
+   * @returns {T | null} Returns the removed element if the deletion is successful, otherwise null.
+   */
   deleteAtHead(): T | null {
     return this.deleteAtIndex(0)
   }
 
-  // remove NODE
-  delete(element: T): void {
-    if (!this.head) return;
+  /**
+   * Deletes the first occurrence of the specified element from the list.
+   *
+   * @template T The type of elements in the list.
+   * @param {T} element - The element to be deleted.
+   * @returns {void}
+   */
+  delete(element: T): T | null {
+    if (!this.head) return null;
+
+    let nodeToDelete;
 
     // Check if the head node is the node to be removed
     if (this.comparator(this.head.value, element) === 0) {
-      this.head = this.head.next;
-      return;
+      nodeToDelete = this.head
+      this.head = null;
+      return nodeToDelete.value;
     }
 
     let current = this.head.next;
     let previous = this.head;
 
-    /**
-     * Search for the node to be removed and keep track of its previous node
-     *
-     * If it were a double linked list, we could simply search the node
-     * and it would have a pointer to the previous node
-     **/
-    while (current) {
-      if (this.comparator(current.value, element) === 0) {
-        current = null;
-      } else {
-        previous = current;
-        current = current.next;
-      }
+    while (current && current.value !== element) {
+      previous = current;
+      current = current.next;
     }
 
     /**
@@ -142,10 +183,23 @@ class LinkedList<T> {
      * the 'previous' will point to the last node,
      * since the last node hasn't next, nothing will happen
      **/
-    previous.next = previous.next ? previous.next.next : null;
+    if(current === null) {
+      return null
+    }
+
+    nodeToDelete = current.value;
+    previous.next = current.next;
+
+    return nodeToDelete
   }
 
-  // search NODE / has NODE
+  /**
+   * Searches for the first occurrence of the specified element in the list.
+   *
+   * @template T The type of elements in the list.
+   * @param {T} data - The element to search for.
+   * @returns {T | null} Returns the element if found, otherwise null.
+   */
   search(data: T): T | null {
     let current = this.head;
     while (current) {
@@ -157,30 +211,32 @@ class LinkedList<T> {
     return null;
   }
 
-  print(): void {
-    let curr = this.head
-
-    let output = ""
-
-    while (curr !== null) {
-      output += `${curr.value} `
-      curr = curr.next
-    }
-
-    console.log(output)
-  }
-
+  /**
+   * Gets the size of the list.
+   *
+   * @returns {number} Returns the number of elements in the list.
+   */
   getSize(): number {
     return this.size
   }
 
+  /**
+   * Checks if the list is empty.
+   *
+   * @returns {boolean} Returns true if the list is empty, otherwise false.
+   */
   isEmpty(): boolean {
     return this.head === null && this.size === 0
   }
-  
+
+  /**
+   * Returns an iterator for the list, allowing the use of for...of loops.
+   *
+   * @returns {IterableIterator<T>} An iterator for the list.
+   */
   [Symbol.iterator](): IterableIterator<T> {
     let current = this.head;
-    
+
     return {
       next: (): IteratorResult<T> => {
         if (current) {
