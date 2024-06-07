@@ -2,18 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LinkedList = void 0;
 const Node_1 = require("./Node");
+// head: root (either null or a node with next === null / another node)
+// length: SIZE = [0... SIZE-1]
 class LinkedList {
     constructor(comparator) {
         this.head = null;
         this.size = 0;
         this.comparator = comparator;
     }
-    append(element) {
+    // insert at SIZE (insertAtTail)
+    insertAtTail(element) {
         return this.insertAtIndex(this.size, element);
     }
-    prepend(element) {
+    // insert at 0 (insertAtHead)
+    insertAtHead(element) {
         return this.insertAtIndex(0, element);
     }
+    // insert at x
     insertAtIndex(index, element) {
         if (index < 0 || index > this.size) {
             return false;
@@ -42,8 +47,8 @@ class LinkedList {
         this.size++;
         return true;
     }
+    // remove at x
     deleteAtIndex(index) {
-        var _a;
         if (index < 0 || index >= this.size) {
             return null;
         }
@@ -53,7 +58,7 @@ class LinkedList {
                 return null;
             }
             removedElement = this.head.value;
-            this.head = (_a = this.head) === null || _a === void 0 ? void 0 : _a.next;
+            this.head = this.head.next;
         }
         else {
             let current = this.head;
@@ -77,12 +82,15 @@ class LinkedList {
         this.size--;
         return removedElement;
     }
-    pop() {
+    // remove at SIZE-1 (deleteAtTail)
+    deleteAtTail() {
         return this.deleteAtIndex(this.size - 1);
     }
-    shift() {
+    // remove at 0 (deleteAtHead)
+    deleteAtHead() {
         return this.deleteAtIndex(0);
     }
+    // remove NODE
     delete(element) {
         if (!this.head)
             return;
@@ -115,11 +123,12 @@ class LinkedList {
          **/
         previous.next = previous.next ? previous.next.next : null;
     }
+    // search NODE / has NODE
     search(data) {
         let current = this.head;
         while (current) {
             if (this.comparator(current.value, data)) {
-                return current;
+                return current.value;
             }
             current = current.next;
         }
@@ -139,6 +148,24 @@ class LinkedList {
     }
     isEmpty() {
         return this.head === null && this.size === 0;
+    }
+    [Symbol.iterator]() {
+        let current = this.head;
+        return {
+            next: () => {
+                if (current) {
+                    const value = current.value;
+                    current = current.next;
+                    return { done: false, value };
+                }
+                else {
+                    return { done: true, value: undefined };
+                }
+            },
+            [Symbol.iterator]() {
+                return this;
+            }
+        };
     }
 }
 exports.LinkedList = LinkedList;

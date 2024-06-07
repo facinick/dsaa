@@ -1,5 +1,8 @@
 import { Node } from "./Node";
 
+// head: root (either null or a node with next === null / another node)
+// length: SIZE = [0... SIZE-1]
+
 class LinkedList<T> {
   private size: number;
   private head: Node<T> | null;
@@ -11,14 +14,17 @@ class LinkedList<T> {
     this.comparator = comparator
   }
 
-  append(element: T): boolean {
+  // insert at SIZE (insertAtTail)
+  insertAtTail(element: T): boolean {
     return this.insertAtIndex(this.size, element)
   }
 
-  prepend(element: T): boolean {
+  // insert at 0 (insertAtHead)
+  insertAtHead(element: T): boolean {
     return this.insertAtIndex(0, element)
   }
 
+  // insert at x
   insertAtIndex(index: number, element: T): boolean {
     if (index < 0 || index > this.size) {
       return false;
@@ -52,6 +58,7 @@ class LinkedList<T> {
     return true;
   }
 
+  // remove at x
   deleteAtIndex(index: number): T | null {
     if (index < 0 || index >= this.size) {
       return null;
@@ -64,7 +71,7 @@ class LinkedList<T> {
         return null;
       }
       removedElement = this.head.value
-      this.head = this.head?.next;
+      this.head = this.head.next;
     } else {
       let current = this.head;
       let previous = null;
@@ -92,14 +99,17 @@ class LinkedList<T> {
     return removedElement;
   }
 
-  pop(): T | null {
+  // remove at SIZE-1 (deleteAtTail)
+  deleteAtTail(): T | null {
     return this.deleteAtIndex(this.size - 1)
   }
 
-  shift(): T | null {
+  // remove at 0 (deleteAtHead)
+  deleteAtHead(): T | null {
     return this.deleteAtIndex(0)
   }
 
+  // remove NODE
   delete(element: T): void {
     if (!this.head) return;
 
@@ -135,11 +145,12 @@ class LinkedList<T> {
     previous.next = previous.next ? previous.next.next : null;
   }
 
-  search(data: T): Node<T> | null {
+  // search NODE / has NODE
+  search(data: T): T | null {
     let current = this.head;
     while (current) {
       if (this.comparator(current.value, data)) {
-        return current;
+        return current.value;
       }
       current = current.next;
     }
@@ -165,6 +176,25 @@ class LinkedList<T> {
 
   isEmpty(): boolean {
     return this.head === null && this.size === 0
+  }
+  
+  [Symbol.iterator](): IterableIterator<T> {
+    let current = this.head;
+    
+    return {
+      next: (): IteratorResult<T> => {
+        if (current) {
+          const value = current.value;
+          current = current.next;
+          return { done: false, value };
+        } else {
+          return { done: true, value: undefined as any };
+        }
+      },
+      [Symbol.iterator]() {
+        return this;
+      }
+    };
   }
 }
 
