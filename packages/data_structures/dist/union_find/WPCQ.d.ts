@@ -4,7 +4,7 @@ declare class WPCQ {
     private nComponents;
     private weights;
     constructor(n: number);
-    find(p: number): number;
+    find(p: number): number | null;
     connected(p: number, q: number): boolean;
     union(p: number, q: number): void;
     count(): number;

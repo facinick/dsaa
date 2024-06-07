@@ -13,9 +13,6 @@ class WPCQ {
   // keeps weight of tree with root at the item
   // = number of items with root as the node INDEX
   private weights: Array<number>;
-  // for visualisation, not required for this algorithm
-  // private tree: Map<number, Array<number>>;
-
   /*
     cost: n
   */
@@ -37,7 +34,12 @@ class WPCQ {
   }
 
   // same as root(p: number): number
-  find(p: number): number {
+  find(p: number): number | null {
+
+    if(p < 0 || p >= this.N) {
+      return null
+    }
+
     let child = p;
     let parent = this.id[p];
 
@@ -62,7 +64,15 @@ class WPCQ {
 
   // constant time operation every time connected is performed
   public connected(p: number, q: number): boolean {
-    return this.find(p) === this.find(q);
+    const rootP = this.find(p)
+    if(rootP === null) {
+      return false
+    }
+    const rootQ = this.find(q)
+    if(rootQ === null) {
+      return false
+    }
+    return rootP === rootQ;
   }
 
   /*
@@ -73,6 +83,10 @@ class WPCQ {
     const rootP = this.find(p)
     const rootQ = this.find(q)
 
+    if((rootP === null) || (rootQ === null)) {
+      return;
+    }
+
     if(rootP === rootQ) {
       return;
     }
@@ -81,16 +95,12 @@ class WPCQ {
     if(this.weights[rootP] < this.weights[rootQ]) {
       this.id[rootP] = rootQ
       this.weights[rootQ] = this.weights[rootQ] + this.weights[rootP];
-
-      // Update tree structure
-      // this.tree.has(rootQ) ? this.tree.get(rootQ)?.push(rootP) : this.tree.set(rootQ, [rootP])
     } else {
       this.id[rootQ] = rootP
       this.weights[rootP] = this.weights[rootQ] + this.weights[rootP]
-
-      // Update tree structure
-      // this.tree.has(rootP) ? this.tree.get(rootP)?.push(rootQ) : this.tree.set(rootP, [rootQ])
     }
+
+    this.nComponents -= 1;
   }
 
   count(): number {
@@ -122,10 +132,6 @@ class WPCQ {
 
     return component;
   }
-
-  // public getTree(): Map<number, Array<number>> {
-  //   return this.tree;
-  // }
 }
 
 export { WPCQ };

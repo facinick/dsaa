@@ -7,8 +7,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WPCQ = void 0;
 // depth of any node here is at most log base 2 of N
 class WPCQ {
-    // for visualisation, not required for this algorithm
-    // private tree: Map<number, Array<number>>;
     /*
       cost: n
     */
@@ -27,6 +25,9 @@ class WPCQ {
     }
     // same as root(p: number): number
     find(p) {
+        if (p < 0 || p >= this.N) {
+            return null;
+        }
         let child = p;
         let parent = this.id[p];
         // in case we find root element, it's value will point to it's own id. 
@@ -48,7 +49,15 @@ class WPCQ {
     }
     // constant time operation every time connected is performed
     connected(p, q) {
-        return this.find(p) === this.find(q);
+        const rootP = this.find(p);
+        if (rootP === null) {
+            return false;
+        }
+        const rootQ = this.find(q);
+        if (rootQ === null) {
+            return false;
+        }
+        return rootP === rootQ;
     }
     /*
       link root of smaller tree to root of larger tree
@@ -56,6 +65,9 @@ class WPCQ {
     union(p, q) {
         const rootP = this.find(p);
         const rootQ = this.find(q);
+        if ((rootP === null) || (rootQ === null)) {
+            return;
+        }
         if (rootP === rootQ) {
             return;
         }
@@ -63,15 +75,12 @@ class WPCQ {
         if (this.weights[rootP] < this.weights[rootQ]) {
             this.id[rootP] = rootQ;
             this.weights[rootQ] = this.weights[rootQ] + this.weights[rootP];
-            // Update tree structure
-            // this.tree.has(rootQ) ? this.tree.get(rootQ)?.push(rootP) : this.tree.set(rootQ, [rootP])
         }
         else {
             this.id[rootQ] = rootP;
             this.weights[rootP] = this.weights[rootQ] + this.weights[rootP];
-            // Update tree structure
-            // this.tree.has(rootP) ? this.tree.get(rootP)?.push(rootQ) : this.tree.set(rootP, [rootQ])
         }
+        this.nComponents -= 1;
     }
     count() {
         return this.nComponents;

@@ -127,7 +127,7 @@ class LinkedList {
     search(data) {
         let current = this.head;
         while (current) {
-            if (this.comparator(current.value, data)) {
+            if (this.comparator(current.value, data) === 0) {
                 return current.value;
             }
             current = current.next;

@@ -82,6 +82,8 @@ class WeightedQuickUnion {
       // Update tree structure
       // this.tree.has(rootP) ? this.tree.get(rootP)?.push(rootQ) : this.tree.set(rootP, [rootQ])
     }
+
+    this.nComponents -= 1;
   }
 
   count(): number {

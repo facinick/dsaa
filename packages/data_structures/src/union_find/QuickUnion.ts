@@ -27,6 +27,7 @@ class QuickUnion {
     const rootQ = this.find(q);
 
     this.id[rootP] = rootQ;
+    this.nComponents -= 1;
   }
 
   // this time same as checking if p and q have same root / same identifier for their component.
