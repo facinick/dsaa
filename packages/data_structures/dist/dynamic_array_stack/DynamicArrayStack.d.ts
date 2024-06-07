@@ -9,6 +9,7 @@ declare class DynamicArrayStack<T> {
     getSize(): number;
     search(element: T): T | null;
     isEmpty(): boolean;
+    getMaxSpace(): number;
     [Symbol.iterator](): IterableIterator<T>;
 }
 export { DynamicArrayStack };

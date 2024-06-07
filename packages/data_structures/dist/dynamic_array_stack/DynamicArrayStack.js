@@ -8,8 +8,8 @@ class DynamicArrayStack {
         this.comparator = comparator;
     }
     push(element) {
-        if (this.top === this.stack.length) {
-            this.resize(this.stack.length * 2);
+        if (this.top === this.getMaxSpace()) {
+            this.resize(this.getMaxSpace() * 2);
         }
         this.stack[this.top] = element;
         this.top++;
@@ -45,7 +45,10 @@ class DynamicArrayStack {
         return null;
     }
     isEmpty() {
-        return this.stack.length === 0 && this.getSize() === 0;
+        return this.getSize() === 0;
+    }
+    getMaxSpace() {
+        return this.stack.length;
     }
     [Symbol.iterator]() {
         let head = this.top - 1;

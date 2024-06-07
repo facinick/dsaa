@@ -1,20 +1,25 @@
-import { DynamicArrayStack } from 'data_structures';
+import { DoublyLinkedList } from 'data_structures';
 import { useEffect } from 'react';
-import { PercolatingGrid } from '../PercolatingGrid/PercolatingGrid';
+import { PercolatingGrid } from '../PercolatingGrid';
 import styles from './App.module.css';
 
 function App() {
 
   useEffect(() => {
-    const ss = new DynamicArrayStack<number>((a,b) => a<b? -1: a>b ? 1: 0)
+    const dll = new DoublyLinkedList<number>((a,b) => a<b? -1: a>b ? 1: 0)
     console.log(`-----1-----`)
-    ss.push(1)
-    ss.push(2)
-    ss.push(3)
-    ss.push(4)
-    ss.push(5)
+    dll.insertAtHead(1)
+    dll.insertAtHead(2)
+    dll.insertAtHead(3)
+    dll.insertAtHead(4)
+    dll.insertAtHead(5)
+    console.log(`size: ${dll.getSize()}`)
+    console.log(`removed: ${dll.deleteAtHead()}`)
+    console.log(`size: ${dll.getSize()}`)
+    console.log(`removed: ${dll.deleteAtTail()}`)
+    console.log(`size: ${dll.getSize()}`)
 
-    for(let element of ss) {
+    for(let element of dll) {
       console.log(element)
     }
     console.log(`----------`)

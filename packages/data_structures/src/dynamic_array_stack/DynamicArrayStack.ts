@@ -11,8 +11,8 @@ class DynamicArrayStack<T> {
   }
 
   push(element: T) {
-    if(this.top === this.stack.length) {
-      this.resize(this.stack.length * 2)
+    if(this.top === this.getMaxSpace()) {
+      this.resize(this.getMaxSpace() * 2)
     }
 
     this.stack[this.top] = element
@@ -59,7 +59,11 @@ class DynamicArrayStack<T> {
   } 
 
   public isEmpty(): boolean {
-    return this.stack.length === 0 && this.getSize() === 0
+    return this.getSize() === 0
+  }
+
+  public getMaxSpace(): number {
+    return this.stack.length
   }
 
   [Symbol.iterator](): IterableIterator<T> {

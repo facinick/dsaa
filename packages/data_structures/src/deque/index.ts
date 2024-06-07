@@ -1,0 +1,2 @@
+export { Deque } from './Deque';
+
