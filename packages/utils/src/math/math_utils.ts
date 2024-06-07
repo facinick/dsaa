@@ -17,7 +17,6 @@ function calculateConfidenceInterval(values: number[], confidenceLevel: number =
   return [mean - marginOfError, mean + marginOfError];
 }
 
-
 const getRandomBetween = (min: number, max: number): number => {
   return Math.random() * (max - min) + min;
 }
