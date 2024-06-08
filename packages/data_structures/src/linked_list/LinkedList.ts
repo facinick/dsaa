@@ -2,7 +2,6 @@ import { Node } from "./Node";
 
 /**
  * Represents a singly linked list.
- *
  * @template T The type of elements in the list.
  */
 class LinkedList<T> {
