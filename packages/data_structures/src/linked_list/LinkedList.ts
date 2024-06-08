@@ -56,7 +56,7 @@ class LinkedList<T> {
       return false;
     }
 
-    const newNode = new Node<T>(element);
+    const newNode = new LinkedList.Node<T>(element);
 
     if (index === 0) {
       newNode.next = this.head;
@@ -252,6 +252,12 @@ class LinkedList<T> {
       }
     };
   }
+
+   /**
+   * Node class for the linked list.
+   * @template T - Type of element stored in the node.
+   */
+  static Node = Node;
 }
 
 export {

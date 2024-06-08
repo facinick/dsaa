@@ -1,14 +1,19 @@
-import { DllNode as Node } from "./Node";
+import { Node } from "./Node";
 
-// head: root (either null or a node with next === null / another node)
-// length: SIZE = [0... SIZE-1]
-
+/**
+ * Doubly linked list implementation in TypeScript.
+ * @template T - Type of elements stored in the list.
+ */
 class DoublyLinkedList<T> {
   private size: number;
   private head: Node<T> | null;
   private tail: Node<T> | null;
   private comparator: (a: T, b: T) => -1 | 0 | 1;
 
+  /**
+   * Creates an instance of a doubly linked list.
+   * @param {function(T, T): -1 | 0 | 1} comparator - Comparator function to compare elements.
+   */
   constructor(comparator: (a: T, b: T) => -1 | 0 | 1) {
     this.head = null;
     this.tail = null;
@@ -16,23 +21,39 @@ class DoublyLinkedList<T> {
     this.comparator = comparator
   }
 
-  // insert at SIZE (insertAtTail)
+  /**
+   * Inserts an element at the end of the list.
+   * @template T The type of elements in the list.
+   * @param {T} element - Element to be inserted.
+   * @returns {boolean} - Returns true if the element was successfully inserted.
+   */
   insertAtTail(element: T): boolean {
     return this.insertAtIndex(this.size, element)
   }
 
-  // insert at 0 (insertAtHead)
+  /**
+   * Inserts an element at the beginning of the list.
+   * @template T The type of elements in the list.
+   * @param {T} element - Element to be inserted.
+   * @returns {boolean} - Returns true if the element was successfully inserted.
+   */
   insertAtHead(element: T): boolean {
     return this.insertAtIndex(0, element)
   }
 
-  // insert at x
+  /**
+   * Inserts an element at a specified index in the list.
+   * @template T The type of elements in the list.
+   * @param {number} index - Index at which the element should be inserted.
+   * @param {T} element - Element to be inserted.
+   * @returns {boolean} - Returns true if the element was successfully inserted.
+   */
   insertAtIndex(index: number, element: T): boolean {
     if (index < 0 || index > this.size) {
       return false;
     }
 
-    const newNode = new Node<T>(element);
+    const newNode = new DoublyLinkedList.Node<T>(element);
 
      // new
     if(this.isEmpty()) {
@@ -95,7 +116,12 @@ class DoublyLinkedList<T> {
     return true;
   }
 
-  // remove at x
+  /**
+   * Deletes an element at a specified index in the list.
+   * @template T The type of elements in the list.
+   * @param {number} index - Index of the element to be deleted.
+   * @returns {T | null} - Returns the deleted element, or null if the index is invalid.
+   */
   deleteAtIndex(index: number): T | null {
     if (index < 0 || index >= this.size) {
       return null;
@@ -162,17 +188,61 @@ class DoublyLinkedList<T> {
     return removedElement;
   }
 
-  // remove at SIZE-1 (deleteAtTail)
+  /**
+   * Returns an element at a specified index in the list without any modification.
+   * @template T The type of elements in the list.
+   * @param {number} index - Index of the element to be returned.
+   * @returns {T | null} - Returns the element, or null if the index is invalid, or not found.
+   */
+  peekAtIndex(index: number): T | null {
+    if (index < 0 || index >= this.size) {
+      return null;
+    }
+
+    let peekedElement: T | null = null;
+
+    if(this.isEmpty()) {
+      return null;
+    }
+
+    let current = this.head
+    let counter = 0;
+    while(current && counter != index) {
+      current = current.next;
+      counter++;
+    }
+
+    if(current) {
+      peekedElement = current.value
+    }
+
+    return peekedElement;
+  }
+
+  /**
+   * Deletes the last element in the list.
+   * @template T The type of elements in the list.
+   * @returns {T | null} - Returns the deleted element, or null if the list is empty.
+   */
   deleteAtTail(): T | null {
     return this.deleteAtIndex(this.size - 1)
   }
 
-  // remove at 0 (deleteAtHead)
+  /**
+   * Deletes the first element in the list.
+   * @template T The type of elements in the list.
+   * @returns {T | null} - Returns the deleted element, or null if the list is empty.
+   */
   deleteAtHead(): T | null {
     return this.deleteAtIndex(0)
   }
 
-  // search NODE / has NODE
+  /**
+   * Searches for an element in the list.
+   * @template T The type of elements in the list.
+   * @param {T} data - Element to search for.
+   * @returns {T | null} - Returns the element if found, or null if not found.
+   */
   search(data: T): T | null {
     let current = this.head;
     while (current) {
@@ -184,14 +254,29 @@ class DoublyLinkedList<T> {
     return null;
   }
 
+  /**
+   * Gets the size of the list.
+   * @template T The type of elements in the list.
+   * @returns {number} - Returns the number of elements in the list.
+   */
   getSize(): number {
     return this.size
   }
 
+  /**
+   * Checks if the list is empty.
+   * @template T The type of elements in the list.
+   * @returns {boolean} - Returns true if the list is empty, otherwise false.
+   */
   isEmpty(): boolean {
     return this.head === null && this.tail === null
   }
   
+  /**
+   * Returns an iterator for the list.
+   * @template T The type of elements in the list.
+   * @returns {IterableIterator<T>} - An iterator for the list.
+   */
   [Symbol.iterator](): IterableIterator<T> {
     let current = this.head;
     
@@ -210,7 +295,15 @@ class DoublyLinkedList<T> {
       }
     };
   }
+
+  /**
+   * Node class for the doubly linked list.
+   * @template T - Type of element stored in the node.
+   */
+  static Node = Node;
 }
+
+DoublyLinkedList.Node = Node
 
 export {
   DoublyLinkedList

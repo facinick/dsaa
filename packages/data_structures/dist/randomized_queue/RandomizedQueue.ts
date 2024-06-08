@@ -1,0 +1,7 @@
+class RandomizedQueue {
+
+}
+
+export {
+  RandomizedQueue
+};

@@ -19,5 +19,6 @@ __exportStar(require("./doubly_linked_list"), exports);
 __exportStar(require("./dynamic_array_stack"), exports);
 __exportStar(require("./linked_list"), exports);
 __exportStar(require("./queue"), exports);
+__exportStar(require("./randomized_queue"), exports);
 __exportStar(require("./stack"), exports);
 __exportStar(require("./union_find"), exports);

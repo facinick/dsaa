@@ -1,3 +1,2 @@
-export { LinkedList } from './LinkedList'
-export { Node } from './Node'
+export { LinkedList } from './LinkedList';
 
