@@ -87,7 +87,11 @@ importers:
         specifier: ^2.1.4
         version: 2.1.4
 
-  packages/data_structures: {}
+  packages/data_structures:
+    dependencies:
+      utils:
+        specifier: workspace:^
+        version: link:../utils
 
   packages/utils: {}
 
