@@ -1,4 +1,4 @@
-import { DoublyLinkedList } from 'data_structures';
+import { RandomisedQueue2 } from 'data_structures';
 import { useEffect } from 'react';
 import { PercolatingGrid } from '../PercolatingGrid';
 import styles from './App.module.css';
@@ -6,20 +6,28 @@ import styles from './App.module.css';
 function App() {
 
   useEffect(() => {
-    const dll = new DoublyLinkedList<number>((a,b) => a<b? -1: a>b ? 1: 0)
+    const rq = new RandomisedQueue2<number>()
     console.log(`-----1-----`)
-    dll.insertAtHead(1)
-    dll.insertAtHead(2)
-    dll.insertAtHead(3)
-    dll.insertAtHead(4)
-    dll.insertAtHead(5)
-    console.log(`size: ${dll.getSize()}`)
-    console.log(`removed: ${dll.deleteAtHead()}`)
-    console.log(`size: ${dll.getSize()}`)
-    console.log(`removed: ${dll.deleteAtTail()}`)
-    console.log(`size: ${dll.getSize()}`)
+    rq.enqueue(1)
+    rq.enqueue(2)
+    rq.enqueue(3)
+    rq.enqueue(4)
+    rq.enqueue(5)
 
-    for(let element of dll) {
+    // console.log(rq.dequeue())
+    // console.log(rq.dequeue())
+    // console.log(rq.dequeue())
+    // console.log(rq.dequeue())
+    // console.log(rq.dequeue())
+    // console.log(rq.dequeue())
+
+    for(let element of rq) {
+      console.log(element)
+    }
+    for(let element of rq) {
+      console.log(element)
+    }
+    for(let element of rq) {
       console.log(element)
     }
     console.log(`----------`)

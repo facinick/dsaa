@@ -91,5 +91,32 @@ class RandomisedQueue2 {
         }
         this.a = copyArray;
     }
+    /**
+     * Returns an iterator for the list, allowing the use of for...of loops.
+     *
+     * @returns {IterableIterator<T>} An iterator for the list.
+     */
+    [Symbol.iterator]() {
+        let arr = [...this.a];
+        let top = this.getSize();
+        return {
+            next: () => {
+                if (top > 0) {
+                    const indexToReturn = (0, utils_1.getRandomIntBetween)(0, top - 1);
+                    const value = arr[indexToReturn];
+                    arr[indexToReturn] = arr[top - 1];
+                    delete arr[top - 1];
+                    top--;
+                    return { done: false, value };
+                }
+                else {
+                    return { done: true, value: undefined };
+                }
+            },
+            [Symbol.iterator]() {
+                return this;
+            }
+        };
+    }
 }
 exports.RandomisedQueue2 = RandomisedQueue2;

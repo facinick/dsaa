@@ -2,16 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("utils");
 const RandomisedQueue2_1 = require("./RandomisedQueue2");
-// jest.mock('utils', () => ({
-//   getRandomIntBetween: jest.fn(),
-// }));
+jest.mock('utils', () => ({
+    getRandomIntBetween: jest.fn(),
+}));
 describe('RandomisedQueue2', () => {
+    let queue;
     beforeEach(() => {
+        queue = new RandomisedQueue2_1.RandomisedQueue2();
         jest.clearAllMocks();
     });
     describe('Initialization', () => {
         test('should initialize an empty queue', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             expect(queue.getSize()).toBe(0);
             expect(queue.isEmpty()).toBe(true);
             expect(queue.getCapacity()).toBe(1);
@@ -19,13 +20,11 @@ describe('RandomisedQueue2', () => {
     });
     describe('Enqueue operation', () => {
         test('should add an item to the queue', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             queue.enqueue(1);
             expect(queue.getSize()).toBe(1);
             expect(queue.isEmpty()).toBe(false);
         });
         test('should resize the array when capacity is reached', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             queue.enqueue(1);
             queue.enqueue(2); // Should trigger resize
             expect(queue.getCapacity()).toBe(2);
@@ -36,11 +35,9 @@ describe('RandomisedQueue2', () => {
     });
     describe('Dequeue operation', () => {
         test('should return null when dequeueing from an empty queue', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             expect(queue.dequeue()).toBeNull();
         });
         test('should remove and return a random item from the queue', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             queue.enqueue(1);
             queue.enqueue(2);
             queue.enqueue(3);
@@ -50,7 +47,6 @@ describe('RandomisedQueue2', () => {
             expect(queue.getSize()).toBe(2);
         });
         test('should resize the array when quarter full', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             queue.enqueue(1);
             queue.enqueue(2);
             queue.enqueue(3);
@@ -64,11 +60,9 @@ describe('RandomisedQueue2', () => {
     });
     describe('Sample operation', () => {
         test('should return null when sampling from an empty queue', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             expect(queue.sample()).toBeNull();
         });
         test('should return a random item from the queue without removing it', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             queue.enqueue(1);
             queue.enqueue(2);
             queue.enqueue(3);
@@ -80,7 +74,6 @@ describe('RandomisedQueue2', () => {
     });
     describe('Edge cases', () => {
         test('should handle enqueue and dequeue correctly with multiple operations', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             queue.enqueue(1);
             queue.enqueue(2);
             queue.enqueue(3);
@@ -94,7 +87,6 @@ describe('RandomisedQueue2', () => {
             expect(queue.getSize()).toBe(3);
         });
         test('should maintain correct size after multiple resizes', () => {
-            const queue = new RandomisedQueue2_1.RandomisedQueue2();
             for (let i = 0; i < 100; i++) {
                 queue.enqueue(i);
             }

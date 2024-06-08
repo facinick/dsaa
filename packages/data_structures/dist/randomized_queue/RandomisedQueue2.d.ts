@@ -48,5 +48,11 @@ declare class RandomisedQueue2<T> {
      * @param capacity - The new capacity.
      */
     private resize;
+    /**
+     * Returns an iterator for the list, allowing the use of for...of loops.
+     *
+     * @returns {IterableIterator<T>} An iterator for the list.
+     */
+    [Symbol.iterator](): IterableIterator<T>;
 }
 export { RandomisedQueue2 };
