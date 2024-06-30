@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "data_structures": "workspace:^"
+    "data_structures": "workspace:^",
+    "eventemitter3": "^5.0.1"
   }
 }

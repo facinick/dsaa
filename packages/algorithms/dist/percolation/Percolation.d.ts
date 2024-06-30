@@ -1,10 +1,11 @@
 import { WeightedQuickUnion } from 'data_structures';
+import { EventEmitter } from 'eventemitter3';
 export declare enum SiteState {
     OPEN = "open",
     CLOSED = "closed",
     FULL = "full"
 }
-declare class Percolation {
+declare class Percolation extends EventEmitter {
     private ROWS;
     private COLS;
     private TOP_VIRTUAL_SITE_INDEX;
@@ -18,8 +19,8 @@ declare class Percolation {
     private nSitesFlooded;
     private siteState;
     constructor(p: number, q: number);
-    openSite(p: number): void;
-    private flood;
+    openSite(p: number): number[];
+    private bfsFlood;
     private shouldFlood;
     getNSitesOpen(): number;
     getNSitesFlooded(): number;
@@ -31,6 +32,12 @@ declare class Percolation {
         top: number | null;
         bottom: number | null;
     };
+    getTopVirtualNeighbours(): Array<{
+        left: number | null;
+        right: number | null;
+        top: number | null;
+        bottom: number | null;
+    }>;
     private getRowColsFromIndex;
     isOpen(p: number): boolean;
     isPercolating(): boolean;

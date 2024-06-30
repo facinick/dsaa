@@ -2,14 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Percolation = exports.SiteState = void 0;
 const data_structures_1 = require("data_structures");
+const eventemitter3_1 = require("eventemitter3");
 var SiteState;
 (function (SiteState) {
     SiteState["OPEN"] = "open";
     SiteState["CLOSED"] = "closed";
     SiteState["FULL"] = "full";
 })(SiteState || (exports.SiteState = SiteState = {}));
-class Percolation {
+class Percolation extends eventemitter3_1.EventEmitter {
     constructor(p, q) {
+        super();
         this.nSitesOpen = 0;
         this.nSitesFlooded = 0;
         this.ROWS = p;
@@ -19,32 +21,39 @@ class Percolation {
         this.LAST_ROW_INDEX = this.ROWS - 1;
         this.LAST_COL_INDEX = this.COLS - 1;
         this.TOP_VIRTUAL_SITE_INDEX = 0;
-        this.BOTTOM_VIRTUAL_SITE_INDEX = this.ROWS * this.COLS + 2 - 1;
-        this.sites = new data_structures_1.WeightedQuickUnion(this.ROWS * this.COLS + 2);
-        this.siteState = new Array(this.ROWS * this.COLS + 2).fill(SiteState.CLOSED);
+        const ARRAY_LENGTH = this.ROWS * this.COLS + 2;
+        this.BOTTOM_VIRTUAL_SITE_INDEX = ARRAY_LENGTH - 1;
+        this.sites = new data_structures_1.WeightedQuickUnion(ARRAY_LENGTH);
+        this.siteState = new Array(ARRAY_LENGTH).fill(SiteState.CLOSED);
         this.siteState[this.TOP_VIRTUAL_SITE_INDEX] = SiteState.FULL;
         this.siteState[this.BOTTOM_VIRTUAL_SITE_INDEX] = SiteState.OPEN;
     }
     openSite(p) {
         if (this.isOpen(p)) {
-            return;
+            return [];
         }
         this.siteState[p] = SiteState.OPEN;
         this.nSitesOpen += 1;
         this.unionWithOpenNeighbours(p);
-        this.flood(p);
+        const floodQueue = [];
+        this.bfsFlood(p, floodQueue);
+        return floodQueue;
     }
-    // DFS Flood at p, if any neighbour is flooded, flood myself. Then flood all open neighbouts
-    flood(p) {
-        if (!this.shouldFlood(p)) {
-            return;
-        }
-        const neighbors = this.getNetighbours(p);
-        this.siteState[p] = SiteState.FULL;
-        this.nSitesFlooded += 1;
-        for (const neighbor of Object.values(neighbors)) {
-            if (neighbor !== null && this.isOpen(neighbor) && !this.isFull(neighbor)) {
-                this.flood(neighbor);
+    bfsFlood(p, floodQueue) {
+        const queue = [p];
+        while (queue.length > 0) {
+            const currentSite = queue.shift();
+            if (!this.shouldFlood(currentSite)) {
+                continue;
+            }
+            this.siteState[currentSite] = SiteState.FULL;
+            this.nSitesFlooded += 1;
+            floodQueue.push(currentSite);
+            const neighbors = this.getNetighbours(currentSite);
+            for (const neighbor of Object.values(neighbors)) {
+                if (neighbor !== null && this.isOpen(neighbor) && !this.isFull(neighbor)) {
+                    queue.push(neighbor);
+                }
             }
         }
     }
@@ -111,6 +120,18 @@ class Percolation {
             top,
             bottom
         };
+    }
+    getTopVirtualNeighbours() {
+        const neighbours = [];
+        for (let x = 1; x < this.LAST_COL_INDEX; x++) {
+            neighbours.push({
+                left: null,
+                right: null,
+                top: null,
+                bottom: x
+            });
+        }
+        return neighbours;
     }
     getRowColsFromIndex(p) {
         return {

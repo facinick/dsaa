@@ -39,8 +39,8 @@ function calculateConfidenceInterval(values: number[], confidenceLevel: number =
 /**
  * Generates a random floating-point number between the specified minimum and maximum values.
  * 
- * @param {number} min - The minimum value (INCLUSIVE).
- * @param {number} max - The maximum value (EXCLUSIVE).
+ * @param {number} min - The minimum value (IN-CLUSIVE).
+ * @param {number} max - The maximum value (EX-CLUSIVE).
  * @returns {number} A pseudorandom floating-point number between min and max.
  */
 const getRandomBetween = (min: number, max: number): number => {
@@ -50,8 +50,8 @@ const getRandomBetween = (min: number, max: number): number => {
 /**
  * Generates a random integer between the specified minimum and maximum values.
  * 
- * @param {number} min - The minimum value (INCLUSIVE).
- * @param {number} max - The maximum value (INCLUSIVE).
+ * @param {number} min - The minimum value (IN-CLUSIVE).
+ * @param {number} max - The maximum value (IN-CLUSIVE).
  * @returns {number} A pseudorandom integer between min and max.
  */
 const getRandomIntBetween = (min: number, max: number): number => {
