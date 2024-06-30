@@ -3,10 +3,10 @@
   height: 100%;
   aspect-ratio: 1/1;
 
-  outline: 1px solid grey;
+  transition: all 0.3s linear;
 }
 
-.full {
+.flooding {
   background-color: #2F6CB2;
   color: white;
 }

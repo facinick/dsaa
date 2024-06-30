@@ -1,43 +1,19 @@
-import { RandomisedQueue2 } from 'data_structures';
-import { useEffect } from 'react';
-import { PercolatingGrid } from '../PercolatingGrid';
+import { Heading } from '@radix-ui/themes';
+import { PercolatingGrid } from '../PercolatingGrid/PercolatingGrid.1';
 import styles from './App.module.css';
 
+const SETTINGS = {
+  ROWS: 20,
+  COLS: 20,
+  NUMBER_OF_TRIALS: 100,
+  FLOOD_STAGGER_DELAY: 70,
+  NODE_WIDTH: 30,
+  NODE_HEIGHT: 30
+}
+
 function App() {
-
-  useEffect(() => {
-    const rq = new RandomisedQueue2<number>()
-    console.log(`-----1-----`)
-    rq.enqueue(1)
-    rq.enqueue(2)
-    rq.enqueue(3)
-    rq.enqueue(4)
-    rq.enqueue(5)
-
-    // console.log(rq.dequeue())
-    // console.log(rq.dequeue())
-    // console.log(rq.dequeue())
-    // console.log(rq.dequeue())
-    // console.log(rq.dequeue())
-    // console.log(rq.dequeue())
-
-    for(let element of rq) {
-      console.log(element)
-    }
-    for(let element of rq) {
-      console.log(element)
-    }
-    for(let element of rq) {
-      console.log(element)
-    }
-    console.log(`----------`)
-  },[])
-
   return (
-    <div>
-      <header className={styles.header}>
-        Percolating Grid
-      </header>
+    <div className={styles.app}>
       <main className={styles.main}>
         <PercolatingGrid />
       </main>
