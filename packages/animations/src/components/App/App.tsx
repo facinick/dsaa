@@ -1,5 +1,5 @@
 import { Heading } from '@radix-ui/themes';
-import { PercolatingGrid } from '../PercolatingGrid/PercolatingGrid.1';
+import { PercolatingGrid } from '../PercolatingGrid/PercolatingGrid';
 import styles from './App.module.css';
 
 const SETTINGS = {
