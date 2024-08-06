@@ -19,23 +19,25 @@ function maxSubarray(numbers: number[]): number {
         // 7 - 1
         maxSumEndingHere += num
 
+        // 7 -1 -1 -1 -1 9
+        if(maxSumEndingHere > maxSumSoFar) {
+            maxSumSoFar = maxSumEndingHere
+        }
+        
         // 7 -1 -1 -1 -1 -1 -1 -1 -1
         if(maxSumEndingHere < 0) {
             // we can basically ignore everything as why pic all these numbers only to get sum < 0?
             // and making this 0 ensures if even the smallest +ve number comes, we start from there
             maxSumEndingHere = 0
         }
-
-        // 7 -1 -1 -1 -1 9
-        if(maxSumEndingHere > maxSumSoFar) {
-            maxSumSoFar = maxSumEndingHere
-        }
-
     }
 
     return maxSumSoFar
 }
 
+const maxSubArrayCryptic = (nums: number[]): number => nums.reduce(([m, c], n) => [Math.max(m, c + n), Math.max(0, c + n)], [-Infinity, 0])[0];
+
 export {
-    maxSubarray
+    maxSubarray,
+    maxSubArrayCryptic
 }
