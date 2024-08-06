@@ -1,0 +1,1 @@
+export {isAnagram} from './ValidAnagram'
