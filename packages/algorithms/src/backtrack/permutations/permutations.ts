@@ -1,9 +1,4 @@
-// Function to swap two elements in an array
-function swap(nums: number[], i: number, j: number) {
-    let temp = nums[i];
-    nums[i] = nums[j];
-    nums[j] = temp;
-}
+import { swapInPlace } from 'utils'
 
 /**
 * Main function to generate all permutations of an array of numbers
@@ -27,9 +22,9 @@ function permute(nums: number[]): number[][] {
 
         // Loop through the array to generate permutations
         for (let i = index; i < curr.length; i++) {
-            swap(curr, index, i);            // Swap the current element with the element at index i
+            swapInPlace(curr, index, i);            // Swap the current element with the element at index i
             permutations(curr, index + 1);   // Recursively generate permutations for the next index
-            swap(curr, index, i);            // Backtrack by swapping back to the original state
+            swapInPlace(curr, index, i);            // Backtrack by swapping back to the original state
         }
     }
 
