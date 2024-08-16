@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRandomIntBetween = exports.getRandomBetween = exports.calculateStandardDeviation = exports.calculateMean = exports.calculateConfidenceInterval = void 0;
+exports.swapInPlace = exports.getRandomIntBetween = exports.getRandomBetween = exports.calculateStandardDeviation = exports.calculateMean = exports.calculateConfidenceInterval = void 0;
 /**
  * Calculates the mean (average) of a given array of numbers.
  *
@@ -63,3 +63,17 @@ const getRandomIntBetween = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 exports.getRandomIntBetween = getRandomIntBetween;
+/**
+ * Swaps two indexes in place in an array
+ *
+ * @param {number[]} nums - Array where elements will be swapped
+ * @param {number} i - First element index
+ * @param {number} j - Second element index
+ * @returns {void} Doesn't return anything, swapping is done in place
+ */
+const swapInPlace = (nums, i, j) => {
+    let temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+};
+exports.swapInPlace = swapInPlace;

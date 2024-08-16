@@ -60,11 +60,26 @@ const getRandomIntBetween = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/**
+ * Swaps two indexes in place in an array
+ * 
+ * @param {number[]} nums - Array where elements will be swapped
+ * @param {number} i - First element index
+ * @param {number} j - Second element index
+ * @returns {void} Doesn't return anything, swapping is done in place
+ */
+const swapInPlace = (nums: number[], i: number, j: number) => {
+  let temp = nums[i];
+  nums[i] = nums[j];
+  nums[j] = temp;
+}
+
 export {
   calculateConfidenceInterval,
   calculateMean,
   calculateStandardDeviation,
   getRandomBetween,
-  getRandomIntBetween
+  getRandomIntBetween,
+  swapInPlace
 };
 

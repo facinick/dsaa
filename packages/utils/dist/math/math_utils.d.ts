@@ -36,4 +36,13 @@ declare const getRandomBetween: (min: number, max: number) => number;
  * @returns {number} A pseudorandom integer between min and max.
  */
 declare const getRandomIntBetween: (min: number, max: number) => number;
-export { calculateConfidenceInterval, calculateMean, calculateStandardDeviation, getRandomBetween, getRandomIntBetween };
+/**
+ * Swaps two indexes in place in an array
+ *
+ * @param {number[]} nums - Array where elements will be swapped
+ * @param {number} i - First element index
+ * @param {number} j - Second element index
+ * @returns {void} Doesn't return anything, swapping is done in place
+ */
+declare const swapInPlace: (nums: number[], i: number, j: number) => void;
+export { calculateConfidenceInterval, calculateMean, calculateStandardDeviation, getRandomBetween, getRandomIntBetween, swapInPlace };
