@@ -1,19 +1,21 @@
+import { Stack } from "data_structures";
+
 function applyOperator(a: number, b: number, operator: string) {
-    switch(operator) {
+    switch (operator) {
         case '+': {
-            return a+b;
+            return a + b;
             break;
         }
         case '-': {
-            return a-b;
+            return a - b;
             break;
         }
         case '/': {
-            return Math.trunc(a/b);
+            return Math.trunc(a / b);
             break;
         }
         case '*': {
-            return a*b;
+            return a * b;
             break;
         }
         default: {
@@ -30,16 +32,16 @@ function applyOperator(a: number, b: number, operator: string) {
     Output: number
 */
 function evalRPN(tokens: string[]): number {
-    
-    const operands: number[] = []
 
-    if(tokens.length === 0) {
+    const operands = new Stack((a: number, b: number) => a < b ? -1 : a === b ? 0 : 1)
+
+    if (tokens.length === 0) {
         return 0
     }
 
     tokens.forEach((token => {
 
-        if(!isNaN(parseInt(token))) {
+        if (!isNaN(parseInt(token))) {
             operands.push(parseInt(token))
         }
 
@@ -47,8 +49,8 @@ function evalRPN(tokens: string[]): number {
             const operand2 = operands.pop()
             const operand1 = operands.pop()
 
-            if(operand2 === undefined || operand1 === undefined)
-            throw new Error(`Invalid expression`)
+            if (operand2 === null || operand1 === null)
+                throw new Error(`Invalid expression`)
 
             const result = applyOperator(operand1, operand2, token)
             operands.push(result)
@@ -56,8 +58,8 @@ function evalRPN(tokens: string[]): number {
 
     }))
 
-    if(operands.length !== 1)
-    throw new Error(`Invalid expression`)
+    if (operands.getSize() !== 1)
+        throw new Error(`Invalid expression`)
 
     return operands.pop()!
 };
