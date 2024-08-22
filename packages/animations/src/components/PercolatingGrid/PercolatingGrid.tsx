@@ -142,23 +142,35 @@ export const PercolatingGrid = (): JSX.Element => {
     update();
   };
 
+  useEffect(() => randomize(), [])
+
   return (
     <>
-      <Card>
-        {id.map((_, index, id) => {
-          if (index !== 0 && index !== nLength - 1) {
-            return (
-              <GridNode
-                key={index}
-                flooding={flooding[index]}
-                onClick={() => onGridNodeClick(index)}
-                id={index}
-                parentId={id[index]}
-                siteState={siteState[index]} />
-            );
-          } else return null;
-        })}
-      </Card>
+      {/* <Card> */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${nCols}, ${SETTINGS.NODE_WIDTH}px)`,
+            gridTemplateRows: `repeat(${nRows}, ${SETTINGS.NODE_HEIGHT}px)`,
+            width: `${SETTINGS.NODE_WIDTH * nCols}px`,
+            height: `${SETTINGS.NODE_HEIGHT * nRows}px`,
+          }}
+        >
+          {id.map((_, index, id) => {
+            if (index !== 0 && index !== nLength - 1) {
+              return (
+                <GridNode
+                  key={index}
+                  flooding={flooding[index]}
+                  onClick={() => onGridNodeClick(index)}
+                  id={index}
+                  parentId={id[index]}
+                  siteState={siteState[index]} />
+              );
+            } else return null;
+          })}
+        </div>
+      {/* </Card> */}
     </>
   );
 };

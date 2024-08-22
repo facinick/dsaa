@@ -11,7 +11,9 @@
     "build:utils": "pnpm --filter utils build",
     "build:anim": "pnpm --filter animations build",
     "start:anim": "pnpm --filter animations start",
-    "start": "pnpm run start:anim"
+    "dev:anim": "pnpm --filter animations dev",
+    "start": "pnpm run start:anim",
+    "dev": "pnpm run dev:anim"
   },
   "keywords": [],
   "author": "",

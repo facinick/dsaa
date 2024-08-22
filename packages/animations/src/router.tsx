@@ -14,7 +14,7 @@ const router = createBrowserRouter([
         },
         {
           path: "a-star",
-          element: <PathFindingGrid ROWS={20} COLS={20} />
+          element: <PathFindingGrid ROWS={20} COLS={20} FIND_SPEED_MS={200} REFRESH_INTERVAL_MS={2000} PATH_SPEED_MS={200} />
         },
         {
           path: "percolating-grid",

@@ -6,7 +6,12 @@
   transition: all 0.3s linear;
 }
 
-.flooding {
+.full {
+  background-color: white;
+  color: black;
+}
+
+.flooding.full {
   background-color: #2F6CB2;
   color: white;
 }

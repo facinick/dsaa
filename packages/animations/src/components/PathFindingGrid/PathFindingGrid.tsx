@@ -216,8 +216,8 @@ export const PathFindingGrid = ({
     }, [path])
 
     useEffect(() => {
-        let openSet: Heap<Cell> = new Heap()
-        let closedSet: Set<Cell> = new Set()
+        const openSet: Heap<Cell> = new Heap()
+        const closedSet: Set<Cell> = new Set()
         from.gCost = 0
         from.hCost = getEstimatedMoveCost(from, to)
 
@@ -248,7 +248,7 @@ export const PathFindingGrid = ({
                 clearInterval(intervalRef.current!)
                 intervalRef.current = null
                 // Reconstruct path
-                let path: Cell[] = []
+                const path: Cell[] = []
                 let temp: Cell | null = currentNode
                 while (temp !== null) {
                     path.push(temp)
@@ -362,7 +362,7 @@ export const PathFindingGrid = ({
                     let backgroundColor = getBackgroundColor(cell.difficulty)
                     let color = cell.difficulty > 0.5 ? 'rgb(255,255,255)' : 'rgb(0,0,0)'
                     let scale = 0.8
-                    let borderRadius = 0
+                    const borderRadius = 0
 
                     if (isOpen && !pathTraversed) {
                         backgroundColor = 'rgb(179, 19, 18)'

@@ -1,8 +1,6 @@
 
 import {
-  Bell,
-  CircleUser,
-  GitBranch,
+  ChartNetwork,
   Home,
   LineChart,
   Menu,
@@ -10,15 +8,15 @@ import {
   Package2,
   Search,
   ShoppingCart,
-  Users,
+  Users
 } from "lucide-react"
 import { Link, Outlet } from "react-router-dom"
+import { ModeToggle } from "../mode-toggle"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Input } from "../ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 
 export function Dashboard() {
   return (
@@ -27,7 +25,7 @@ export function Dashboard() {
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link to="/" className="flex items-center gap-2 font-semibold">
-              <GitBranch className="h-6 w-6" />
+              <ChartNetwork className="h-6 w-6" />
               <span className="">DSA a</span>
             </Link>
             {/* <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
@@ -148,7 +146,8 @@ export function Dashboard() {
               </div>
             </form>
           </div>
-          <DropdownMenu>
+          <ModeToggle></ModeToggle>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
                 <CircleUser className="h-5 w-5" />
@@ -163,7 +162,7 @@ export function Dashboard() {
               <DropdownMenuSeparator />
               <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           <Outlet />

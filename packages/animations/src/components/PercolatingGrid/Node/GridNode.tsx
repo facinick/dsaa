@@ -1,6 +1,6 @@
+import { cn } from '@/lib/utils';
 import { SiteState } from 'algorithms';
-import styles from "./GridNode.module.css";
-
+import styles from './GridNode.module.css'
 interface Props {
   id: number;
   parentId: number;
@@ -13,14 +13,15 @@ interface Props {
   flooding: boolean
 }
 
-export const GridNode = ({id, value, flooding, parentId, siteState, onClick, onMouseEnter, onMouseLeave}: Props): JSX.Element => {
+export const GridNode = ({ id, value, flooding, parentId, siteState, onClick, onMouseEnter, onMouseLeave }: Props): JSX.Element => {
 
   return (
     <>
-      <div 
+      <div
         data-flooding={flooding}
         onClick={onClick}
-        // className={classNames(styles.gridnode, styles[siteState], styles[flooding?"flooding": ""])}
+        data-state={siteState}
+        className={cn(styles.gridnode, styles[siteState], styles[flooding ? "flooding" : ""])}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
