@@ -5,16 +5,13 @@ import {
   LineChart,
   Menu,
   Package,
-  Package2,
   Search,
   ShoppingCart,
   Users
 } from "lucide-react"
 import { Link, Outlet } from "react-router-dom"
 import { ModeToggle } from "../mode-toggle"
-import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Input } from "../ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 
@@ -36,18 +33,18 @@ export function Dashboard() {
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
-                to="/percolating-grid"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Users className="h-4 w-4" />
-                Percolating grid
-              </Link>
-              <Link
                 to="/a-star"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <LineChart className="h-4 w-4" />
                 A* Algorithm
+              </Link>
+              <Link
+                to="/percolating-grid"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              >
+                <Users className="h-4 w-4" />
+                Percolating grid
               </Link>
             </nav>
           </div>
