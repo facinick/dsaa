@@ -2,9 +2,7 @@ import { Percolation, SiteState } from 'algorithms';
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getRandomIntBetween } from 'utils';
 import { GridNode } from "./Node";
-import styles from "./PercolatingGrid.module.css";
-import { Stats } from "./Stats/Stats";
-import { Button, Card, Flex, Grid } from '@radix-ui/themes';
+import { Card } from '../ui/card';
 
 const SETTINGS = {
   ROWS: 20,
@@ -147,31 +145,19 @@ export const PercolatingGrid = (): JSX.Element => {
   return (
     <>
       <Card>
-        <Grid
-          columns={`repeat(${nCols}, ${SETTINGS.NODE_WIDTH}px)`}
-          rows={`repeat(${nCols}, ${SETTINGS.NODE_WIDTH}px)`}
-        >
-          {id.map((_, index, id) => {
-            if (index !== 0 && index !== nLength - 1) {
-              return (
-                <GridNode
-                  key={index}
-                  flooding={flooding[index]}
-                  onClick={() => onGridNodeClick(index)}
-                  id={index}
-                  parentId={id[index]}
-                  siteState={siteState[index]} />
-              );
-            } else return null;
-          })}
-          {/* </div> */}
-        </Grid>
-      </Card>
-      <Card className={styles.stats}>
-        <Flex justify={"center"} align={"center"} direction={"column"} gap={"3"}>
-          <Stats percolation={percolation} siteState={siteState} />
-          <Button onClick={randomize}>Randomize</Button>
-        </Flex>
+        {id.map((_, index, id) => {
+          if (index !== 0 && index !== nLength - 1) {
+            return (
+              <GridNode
+                key={index}
+                flooding={flooding[index]}
+                onClick={() => onGridNodeClick(index)}
+                id={index}
+                parentId={id[index]}
+                siteState={siteState[index]} />
+            );
+          } else return null;
+        })}
       </Card>
     </>
   );

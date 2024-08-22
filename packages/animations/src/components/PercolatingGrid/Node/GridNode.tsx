@@ -1,5 +1,4 @@
 import { SiteState } from 'algorithms';
-import classNames from "classnames";
 import styles from "./GridNode.module.css";
 
 interface Props {
@@ -21,7 +20,7 @@ export const GridNode = ({id, value, flooding, parentId, siteState, onClick, onM
       <div 
         data-flooding={flooding}
         onClick={onClick}
-        className={classNames(styles.gridnode, styles[siteState], styles[flooding?"flooding": ""])}
+        // className={classNames(styles.gridnode, styles[siteState], styles[flooding?"flooding": ""])}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
