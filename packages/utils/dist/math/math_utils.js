@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.swapInPlace = exports.getRandomIntBetween = exports.getRandomBetween = exports.calculateStandardDeviation = exports.calculateMean = exports.calculateConfidenceInterval = void 0;
 /**
  * Calculates the mean (average) of a given array of numbers.
  *
@@ -11,7 +8,6 @@ function calculateMean(values) {
     const sum = values.reduce((acc, val) => acc + val, 0);
     return sum / values.length;
 }
-exports.calculateMean = calculateMean;
 /**
  * Calculates the standard deviation of a given array of numbers.
  *
@@ -23,7 +19,6 @@ function calculateStandardDeviation(values) {
     const sumOfSquares = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0);
     return Math.sqrt(sumOfSquares / (values.length - 1));
 }
-exports.calculateStandardDeviation = calculateStandardDeviation;
 /**
  * Calculates the confidence interval for a given array of numbers and confidence level.
  *
@@ -38,7 +33,6 @@ function calculateConfidenceInterval(values, confidenceLevel = 1.96) {
     const marginOfError = confidenceLevel * sem;
     return [mean - marginOfError, mean + marginOfError];
 }
-exports.calculateConfidenceInterval = calculateConfidenceInterval;
 /**
  * Generates a random floating-point number between the specified minimum and maximum values.
  *
@@ -49,7 +43,6 @@ exports.calculateConfidenceInterval = calculateConfidenceInterval;
 const getRandomBetween = (min, max) => {
     return Math.random() * (max - min) + min;
 };
-exports.getRandomBetween = getRandomBetween;
 /**
  * Generates a random integer between the specified minimum and maximum values.
  *
@@ -62,7 +55,6 @@ const getRandomIntBetween = (min, max) => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-exports.getRandomIntBetween = getRandomIntBetween;
 /**
  * Swaps two indexes in place in an array
  *
@@ -76,4 +68,4 @@ const swapInPlace = (nums, i, j) => {
     nums[i] = nums[j];
     nums[j] = temp;
 };
-exports.swapInPlace = swapInPlace;
+export { calculateConfidenceInterval, calculateMean, calculateStandardDeviation, getRandomBetween, getRandomIntBetween, swapInPlace };

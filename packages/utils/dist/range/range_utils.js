@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.range = void 0;
-const range = (start, end, step = 1) => {
+export const range = (start, end, step = 1) => {
     let output = [];
     if (typeof end === 'undefined') {
         end = start;
@@ -12,4 +9,3 @@ const range = (start, end, step = 1) => {
     }
     return output;
 };
-exports.range = range;
