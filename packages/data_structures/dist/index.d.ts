@@ -5,4 +5,7 @@ export * from './linked_list';
 export * from './queue';
 export * from './randomized_queue';
 export * from './stack';
+export * from './heap';
 export * from './union_find';
+export * from './tree';
+export * from './graph';

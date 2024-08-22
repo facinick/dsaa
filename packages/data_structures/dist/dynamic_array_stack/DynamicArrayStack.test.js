@@ -4,7 +4,7 @@ const DynamicArrayStack_1 = require("./DynamicArrayStack");
 describe("Dynamic Array Stack tests", () => {
     let da;
     beforeEach(() => {
-        da = new DynamicArrayStack_1.DynamicArrayStack((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+        da = new DynamicArrayStack_1.DynamicArrayStack();
     });
     describe('Initialization', () => {
         test('New dynamic array stack should be empty with length 1', () => {

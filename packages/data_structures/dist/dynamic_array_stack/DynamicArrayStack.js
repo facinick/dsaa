@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DynamicArrayStack = void 0;
 class DynamicArrayStack {
-    constructor(comparator) {
+    constructor() {
         this.stack = new Array(1);
         this.top = 0;
-        this.comparator = comparator;
     }
     push(element) {
         if (this.top === this.getMaxSpace()) {
@@ -35,6 +34,18 @@ class DynamicArrayStack {
     }
     getSize() {
         return this.top;
+    }
+    get(index) {
+        if (index < 0 || index >= this.getSize()) {
+            return null;
+        }
+        return this.stack[index];
+    }
+    set(index, value) {
+        if (index < 0 || index >= this.getSize()) {
+            return;
+        }
+        this.stack[index] = value;
     }
     search(element) {
         for (let i = 0; i < this.getSize(); i++) {
