@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const heap_1 = require("./heap");
-class TestNode extends heap_1.HeapNode {
+import { Heap, HeapNode } from "./heap";
+class TestNode extends HeapNode {
     constructor(value) {
         super();
         this.value = value;
@@ -15,7 +13,7 @@ class TestNode extends heap_1.HeapNode {
 describe('Heap', () => {
     let heap;
     beforeEach(() => {
-        heap = new heap_1.Heap();
+        heap = new Heap();
     });
     test('should start empty', () => {
         expect(heap.isEmpty()).toBe(true);

@@ -9,7 +9,7 @@ class Tree<T> {
   private comparator: (a: T, b: T) => -1 | 0 | 1;
 
   /**
-   * Constructs a new linked list with the specified comparator function.
+   * Constructs a new tree with the specified comparator function.
    *
    * @param {(a: T, b: T) => -1 | 0 | 1} comparator - The function used for comparing elements. Function returns -1 to select a, 0 to equate and 1 to select b.
    */
@@ -21,7 +21,7 @@ class Tree<T> {
   
 
    /**
-   * Node class for the linked list.
+   * Node class for the Tree.
    * @template T - Type of element stored in the node.
    */
   static Node = Node;

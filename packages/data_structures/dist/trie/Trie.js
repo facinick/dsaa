@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Trie = void 0;
 class Trie {
     constructor() {
         this.root = new Map();
@@ -45,4 +42,4 @@ class Trie {
         return true;
     }
 }
-exports.Trie = Trie;
+export { Trie };

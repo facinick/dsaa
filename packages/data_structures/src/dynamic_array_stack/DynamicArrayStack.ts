@@ -2,12 +2,10 @@ class DynamicArrayStack<T> {
   private stack: Array<T>
   // this is where next item will come
   private top: number
-  private comparator: (a: T, b: T) => -1 | 0 | 1;
 
-  constructor(comparator: (a: T, b: T) => -1 | 0 | 1) {
+  constructor() {
     this.stack = new Array<T>(1)
     this.top = 0;
-    this.comparator = comparator
   }
 
   push(element: T) {
@@ -47,6 +45,22 @@ class DynamicArrayStack<T> {
 
   public getSize(): number {
     return this.top
+  }
+
+  public get(index: number): T | null {
+    if(index < 0 || index >= this.getSize()) {
+      return null
+    }
+
+    return this.stack[index]
+  }
+
+  public set(index: number, value: T): void {
+    if(index < 0 || index >= this.getSize()) {
+      return
+    }
+
+    this.stack[index] = value
   }
 
   public search(element: T): T | null {

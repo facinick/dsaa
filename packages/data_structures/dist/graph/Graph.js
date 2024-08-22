@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Graph = void 0;
-const Node_1 = require("./Node");
+import { Node } from './Node';
 /*
 Map()
 1 -> 4 -> 3 -> null
@@ -9,7 +6,7 @@ Map()
 3 -> 1 -> null
 4 -> null
 */
-class Graph {
+export class Graph {
     constructor(comparator) {
         this._adjacencyList = new Map();
         this.comparator = comparator;
@@ -20,7 +17,7 @@ class Graph {
     set adjacencyList(list) { }
     addNode(data) {
         if (!this._adjacencyList.has(data.id)) {
-            const newNode = new Node_1.Node(data);
+            const newNode = new Node(data);
             this._adjacencyList.set(data.id, newNode);
         }
         return this._adjacencyList.get(data.id);
@@ -67,14 +64,14 @@ class Graph {
         const sourceNode = this._adjacencyList.get(sourceNodeId);
         const adjacentNode = this._adjacencyList.get(adjacentNodeId);
         if (sourceNode.next === null) {
-            sourceNode.next = new Node_1.Node(adjacentNode.data);
+            sourceNode.next = new Node(adjacentNode.data);
         }
         else {
             let current = sourceNode;
             while (current.next !== null) {
                 current = current.next;
             }
-            current.next = new Node_1.Node(adjacentNode.data);
+            current.next = new Node(adjacentNode.data);
         }
     }
     removeBidirectionalEdge(nodeAId, nodeBId) {
@@ -118,4 +115,3 @@ class Graph {
         }
     }
 }
-exports.Graph = Graph;

@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.QuickUnion = void 0;
 class QuickUnion {
     constructor(n) {
         this.N = n;
@@ -51,4 +48,4 @@ class QuickUnion {
         console.log(`[${result}]`);
     }
 }
-exports.QuickUnion = QuickUnion;
+export { QuickUnion };

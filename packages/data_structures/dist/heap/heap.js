@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HeapNode = exports.Heap = void 0;
 // Constant representing the index of the top of the heap.
 const top = 0;
 /**
@@ -41,7 +38,6 @@ class HeapNode {
         this._heapIndex = value;
     }
 }
-exports.HeapNode = HeapNode;
 /**
  * A generic heap class implementing a binary heap.
  *
@@ -244,4 +240,4 @@ class Heap {
         };
     }
 }
-exports.Heap = Heap;
+export { Heap, HeapNode };

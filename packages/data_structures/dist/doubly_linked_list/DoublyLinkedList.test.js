@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const DoublyLinkedList_1 = require("./DoublyLinkedList");
+import { DoublyLinkedList } from './DoublyLinkedList';
 describe('LinkedList Tests', () => {
     let list;
     beforeEach(() => {
-        list = new DoublyLinkedList_1.DoublyLinkedList((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+        list = new DoublyLinkedList((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     });
     describe('Initialization', () => {
         test('initial state', () => {

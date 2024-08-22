@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isValidBST = void 0;
 function isValidNode(root, leftLimit, rightLimit) {
     if (root === null) {
         return true;
@@ -22,5 +19,5 @@ function isValidNode(root, leftLimit, rightLimit) {
 function isValidBST(root) {
     return isValidNode(root, -Infinity, +Infinity);
 }
-exports.isValidBST = isValidBST;
 ;
+export { isValidBST };

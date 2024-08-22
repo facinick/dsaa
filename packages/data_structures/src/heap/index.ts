@@ -1,1 +1,1 @@
-export { Heap } from './heap'
+export { Heap, HeapNode } from './heap'

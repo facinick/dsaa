@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Deque = void 0;
-const doubly_linked_list_1 = require("../doubly_linked_list");
+import { DoublyLinkedList } from "../doubly_linked_list";
 class Deque {
     constructor(comparator) {
         this.comparator = comparator;
-        this.dll = new doubly_linked_list_1.DoublyLinkedList(this.comparator);
+        this.dll = new DoublyLinkedList(this.comparator);
     }
     insertAtStart(element) {
         return this.dll.insertAtHead(element);
@@ -29,4 +26,4 @@ class Deque {
         return this.dll[Symbol.iterator]();
     }
 }
-exports.Deque = Deque;
+export { Deque };

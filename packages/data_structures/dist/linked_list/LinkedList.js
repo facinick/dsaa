@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.LinkedList = void 0;
-const Node_1 = require("./Node");
+import { Node } from "./Node";
 /**
  * Represents a singly linked list.
  * @template T The type of elements in the list.
@@ -224,9 +221,9 @@ class LinkedList {
         };
     }
 }
-exports.LinkedList = LinkedList;
 /**
 * Node class for the linked list.
 * @template T - Type of element stored in the node.
 */
-LinkedList.Node = Node_1.Node;
+LinkedList.Node = Node;
+export { LinkedList };

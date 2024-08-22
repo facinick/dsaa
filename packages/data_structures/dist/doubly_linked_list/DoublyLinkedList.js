@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DoublyLinkedList = void 0;
-const Node_1 = require("./Node");
+import { Node } from "./Node";
 /**
  * Doubly linked list implementation in TypeScript.
  * @template T - Type of elements stored in the list.
@@ -260,10 +257,10 @@ class DoublyLinkedList {
         };
     }
 }
-exports.DoublyLinkedList = DoublyLinkedList;
 /**
  * Node class for the doubly linked list.
  * @template T - Type of element stored in the node.
  */
-DoublyLinkedList.Node = Node_1.Node;
-DoublyLinkedList.Node = Node_1.Node;
+DoublyLinkedList.Node = Node;
+DoublyLinkedList.Node = Node;
+export { DoublyLinkedList };

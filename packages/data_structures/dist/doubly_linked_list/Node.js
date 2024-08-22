@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Node = void 0;
 /**
  * Class representing a node in a doubly linked list.
  * @template T - Type of element stored in the node.
@@ -17,4 +14,4 @@ class Node {
         this.previous = null;
     }
 }
-exports.Node = Node;
+export { Node };

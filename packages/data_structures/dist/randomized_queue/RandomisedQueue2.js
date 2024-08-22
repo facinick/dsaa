@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.RandomisedQueue2 = void 0;
-const utils_1 = require("utils");
+import { getRandomIntBetween } from "utils";
 /**
  * A randomized queue implementation using resizing arrays
  * @template T The type of elements in the list.
@@ -59,7 +56,7 @@ class RandomisedQueue2 {
         if (this.getSize() === (this.getCapacity() / 4)) {
             this.resize(this.getCapacity() / 2);
         }
-        const indexToRemove = (0, utils_1.getRandomIntBetween)(0, this.getSize() - 1);
+        const indexToRemove = getRandomIntBetween(0, this.getSize() - 1);
         const removeedElement = this.a[indexToRemove];
         // move last element to the removed element
         this.a[indexToRemove] = this.a[this.top - 1];
@@ -76,7 +73,7 @@ class RandomisedQueue2 {
         if (this.isEmpty()) {
             return null;
         }
-        const indexToReturn = (0, utils_1.getRandomIntBetween)(0, this.getSize() - 1);
+        const indexToReturn = getRandomIntBetween(0, this.getSize() - 1);
         return this.a[indexToReturn];
     }
     /**
@@ -102,7 +99,7 @@ class RandomisedQueue2 {
         return {
             next: () => {
                 if (top > 0) {
-                    const indexToReturn = (0, utils_1.getRandomIntBetween)(0, top - 1);
+                    const indexToReturn = getRandomIntBetween(0, top - 1);
                     const value = arr[indexToReturn];
                     arr[indexToReturn] = arr[top - 1];
                     delete arr[top - 1];
@@ -119,4 +116,4 @@ class RandomisedQueue2 {
         };
     }
 }
-exports.RandomisedQueue2 = RandomisedQueue2;
+export { RandomisedQueue2 };

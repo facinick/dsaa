@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.QuickFind = void 0;
 class QuickFind {
     constructor(n) {
         this.N = n;
@@ -50,4 +47,4 @@ class QuickFind {
         console.log(`[${result}]`);
     }
 }
-exports.QuickFind = QuickFind;
+export { QuickFind };

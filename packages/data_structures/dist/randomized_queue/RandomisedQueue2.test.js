@@ -1,14 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("utils");
-const RandomisedQueue2_1 = require("./RandomisedQueue2");
+import { getRandomIntBetween } from 'utils';
+import { RandomisedQueue2 } from './RandomisedQueue2';
 jest.mock('utils', () => ({
     getRandomIntBetween: jest.fn(),
 }));
 describe('RandomisedQueue2', () => {
     let queue;
     beforeEach(() => {
-        queue = new RandomisedQueue2_1.RandomisedQueue2();
+        queue = new RandomisedQueue2();
         jest.clearAllMocks();
     });
     describe('Initialization', () => {
@@ -41,7 +39,7 @@ describe('RandomisedQueue2', () => {
             queue.enqueue(1);
             queue.enqueue(2);
             queue.enqueue(3);
-            utils_1.getRandomIntBetween.mockReturnValueOnce(1);
+            getRandomIntBetween.mockReturnValueOnce(1);
             const removedItem = queue.dequeue();
             expect(removedItem).toBe(2);
             expect(queue.getSize()).toBe(2);
@@ -51,7 +49,7 @@ describe('RandomisedQueue2', () => {
             queue.enqueue(2);
             queue.enqueue(3);
             queue.enqueue(4);
-            utils_1.getRandomIntBetween.mockReturnValueOnce(0);
+            getRandomIntBetween.mockReturnValueOnce(0);
             queue.dequeue();
             queue.dequeue();
             queue.dequeue();
@@ -66,7 +64,7 @@ describe('RandomisedQueue2', () => {
             queue.enqueue(1);
             queue.enqueue(2);
             queue.enqueue(3);
-            utils_1.getRandomIntBetween.mockReturnValueOnce(2);
+            getRandomIntBetween.mockReturnValueOnce(2);
             const sampledItem = queue.sample();
             expect(sampledItem).toBe(3);
             expect(queue.getSize()).toBe(3);
@@ -80,9 +78,9 @@ describe('RandomisedQueue2', () => {
             queue.enqueue(4);
             queue.enqueue(5);
             expect(queue.getSize()).toBe(5);
-            utils_1.getRandomIntBetween.mockReturnValueOnce(3);
+            getRandomIntBetween.mockReturnValueOnce(3);
             expect(queue.dequeue()).toBe(4);
-            utils_1.getRandomIntBetween.mockReturnValueOnce(0);
+            getRandomIntBetween.mockReturnValueOnce(0);
             expect(queue.dequeue()).toBe(1);
             expect(queue.getSize()).toBe(3);
         });

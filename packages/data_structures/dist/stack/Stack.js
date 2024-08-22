@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Stack = void 0;
-const linked_list_1 = require("../linked_list");
+import { LinkedList } from "../linked_list";
 class Stack {
     constructor(comparator) {
         this.comparator = comparator;
-        this.s = new linked_list_1.LinkedList(this.comparator);
+        this.s = new LinkedList(this.comparator);
     }
     push(element) {
         this.s.insertAtHead(element);
@@ -26,4 +23,4 @@ class Stack {
         return this.s[Symbol.iterator]();
     }
 }
-exports.Stack = Stack;
+export { Stack };

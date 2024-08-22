@@ -4,7 +4,7 @@ describe("Dynamic Array Stack tests", () => {
   let da: DynamicArrayStack<number>;
 
   beforeEach(() => {
-    da = new DynamicArrayStack<number>((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+    da = new DynamicArrayStack<number>();
   });
 
   describe('Initialization', () => {

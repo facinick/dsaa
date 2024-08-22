@@ -2,17 +2,11 @@ class MinStack {
 
     private stack: Array<number> = new Array()
     private _top: number = 0
-
     private minimumPrefixStack: Array<number> = new Array()
-
-    constructor() {
-        
-    }
 
     push(val: number): void {
         this.stack[this._top] = val
         this.minimumPrefixStack[this._top] = this._top === 0? val: Math.min(this.minimumPrefixStack[this._top-1], val)
-        
         this._top++
     }
 

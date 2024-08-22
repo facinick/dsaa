@@ -1,10 +1,7 @@
-"use strict";
 /*
   Proposition: Depth of any node is at max Log(n), therefore
   cost of finding roots is easier, in previous (quick union, this wasn't the case)
 */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.WPCQ = void 0;
 // depth of any node here is at most log base 2 of N
 class WPCQ {
     /*
@@ -107,4 +104,4 @@ class WPCQ {
         return component;
     }
 }
-exports.WPCQ = WPCQ;
+export { WPCQ };

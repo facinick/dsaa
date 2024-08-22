@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MinStack = void 0;
 class MinStack {
     constructor() {
         this.stack = new Array();
@@ -32,4 +29,4 @@ class MinStack {
         return this.minimumPrefixStack[this._top - 1];
     }
 }
-exports.MinStack = MinStack;
+export { MinStack };

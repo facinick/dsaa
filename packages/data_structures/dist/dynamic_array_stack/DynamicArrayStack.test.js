@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const DynamicArrayStack_1 = require("./DynamicArrayStack");
+import { DynamicArrayStack } from "./DynamicArrayStack";
 describe("Dynamic Array Stack tests", () => {
     let da;
     beforeEach(() => {
-        da = new DynamicArrayStack_1.DynamicArrayStack();
+        da = new DynamicArrayStack();
     });
     describe('Initialization', () => {
         test('New dynamic array stack should be empty with length 1', () => {

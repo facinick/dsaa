@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const LinkedList_1 = require("./LinkedList");
+import { LinkedList } from './LinkedList';
 describe('LinkedList Tests', () => {
     let ll;
     beforeEach(() => {
-        ll = new LinkedList_1.LinkedList((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+        ll = new LinkedList((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     });
     describe('Initialization', () => {
         test('New linked list should be empty', () => {

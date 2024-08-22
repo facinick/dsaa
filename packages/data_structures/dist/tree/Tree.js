@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Tree = void 0;
-const Node_1 = require("./Node");
+import { Node } from "./Node";
 /**
  * Represents a tree.
  * @template T The type of elements in the tree.
@@ -17,9 +14,9 @@ class Tree {
         this.comparator = comparator;
     }
 }
-exports.Tree = Tree;
 /**
 * Node class for the Tree.
 * @template T - Type of element stored in the node.
 */
-Tree.Node = Node_1.Node;
+Tree.Node = Node;
+export { Tree };

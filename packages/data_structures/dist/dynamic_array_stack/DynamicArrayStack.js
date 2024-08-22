@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DynamicArrayStack = void 0;
 class DynamicArrayStack {
     constructor() {
         this.stack = new Array(1);
@@ -80,4 +77,4 @@ class DynamicArrayStack {
         };
     }
 }
-exports.DynamicArrayStack = DynamicArrayStack;
+export { DynamicArrayStack };

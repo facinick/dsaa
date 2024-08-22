@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Queue = void 0;
-const linked_list_1 = require("../linked_list");
+import { LinkedList } from "../linked_list";
 class Queue {
     constructor(comparator) {
         this.comparator = comparator;
-        this.q = new linked_list_1.LinkedList(this.comparator);
+        this.q = new LinkedList(this.comparator);
     }
     enqueue(element) {
         this.q.insertAtHead(element);
@@ -46,4 +43,4 @@ class Queue {
         };
     }
 }
-exports.Queue = Queue;
+export { Queue };

@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const stack_1 = require("../stack");
+import { Stack } from '../stack';
 describe('Stack Tests', () => {
     let stack;
     beforeEach(() => {
-        stack = new stack_1.Stack((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+        stack = new Stack((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     });
     describe('Initialization', () => {
         test('New stack should be empty', () => {

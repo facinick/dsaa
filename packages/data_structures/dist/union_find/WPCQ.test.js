@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const WPCQ_1 = require("./WPCQ");
+import { WPCQ } from './WPCQ';
 describe('Weighted Path Compression Quick Union Tests', () => {
     let wpcq;
     beforeEach(() => {
-        wpcq = new WPCQ_1.WPCQ(10);
+        wpcq = new WPCQ(10);
     });
     describe('Initialization', () => {
         test('New WPCQ instance should be initialized correctly', () => {
@@ -70,17 +68,17 @@ describe('Weighted Path Compression Quick Union Tests', () => {
     });
     describe('Edge Cases', () => {
         test('Handling initialization with size 0', () => {
-            const wpcqZeroSize = new WPCQ_1.WPCQ(0);
+            const wpcqZeroSize = new WPCQ(0);
             expect(wpcqZeroSize.count()).toBe(0);
         });
         test('Union and Find operations with size 0', () => {
-            const wpcqZeroSize = new WPCQ_1.WPCQ(0);
+            const wpcqZeroSize = new WPCQ(0);
             wpcqZeroSize.union(0, 1);
             expect(wpcqZeroSize.find(0)).toBe(null);
             expect(wpcqZeroSize.connected(0, 1)).toBe(false);
         });
         test('Union and Find operations with size 1', () => {
-            const wpcqSize1 = new WPCQ_1.WPCQ(1);
+            const wpcqSize1 = new WPCQ(1);
             wpcqSize1.union(0, 0);
             expect(wpcqSize1.find(0)).toBe(0);
             expect(wpcqSize1.connected(0, 0)).toBe(true);

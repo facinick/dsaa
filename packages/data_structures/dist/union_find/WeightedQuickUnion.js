@@ -1,10 +1,7 @@
-"use strict";
 /*
   Proposition: Depth of any node is at max Log(n), therefore
   cost of finding roots is easier, in previous (quick union, this wasn't the case)
 */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.WeightedQuickUnion = void 0;
 // depth of any node here is at most log base 2 of N
 class WeightedQuickUnion {
     // for visualisation, not required for this algorithm
@@ -91,4 +88,4 @@ class WeightedQuickUnion {
         return component;
     }
 }
-exports.WeightedQuickUnion = WeightedQuickUnion;
+export { WeightedQuickUnion };

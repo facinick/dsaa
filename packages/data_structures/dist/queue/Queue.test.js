@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const queue_1 = require("../queue");
+import { Queue } from '../queue';
 describe('Queue Tests', () => {
     let queue;
     beforeEach(() => {
-        queue = new queue_1.Queue((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+        queue = new Queue((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     });
     describe('Initialization', () => {
         test('New queue should be empty', () => {
