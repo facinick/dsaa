@@ -1,15 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Percolation = exports.SiteState = void 0;
-const data_structures_1 = require("data_structures");
-const eventemitter3_1 = require("eventemitter3");
-var SiteState;
+import { WeightedQuickUnion } from 'data_structures';
+import { EventEmitter } from 'eventemitter3';
+export var SiteState;
 (function (SiteState) {
     SiteState["OPEN"] = "open";
     SiteState["CLOSED"] = "closed";
     SiteState["FULL"] = "full";
-})(SiteState || (exports.SiteState = SiteState = {}));
-class Percolation extends eventemitter3_1.EventEmitter {
+})(SiteState || (SiteState = {}));
+class Percolation extends EventEmitter {
     constructor(p, q) {
         super();
         this.nSitesOpen = 0;
@@ -23,7 +20,7 @@ class Percolation extends eventemitter3_1.EventEmitter {
         this.TOP_VIRTUAL_SITE_INDEX = 0;
         const ARRAY_LENGTH = this.ROWS * this.COLS + 2;
         this.BOTTOM_VIRTUAL_SITE_INDEX = ARRAY_LENGTH - 1;
-        this.sites = new data_structures_1.WeightedQuickUnion(ARRAY_LENGTH);
+        this.sites = new WeightedQuickUnion(ARRAY_LENGTH);
         this.siteState = new Array(ARRAY_LENGTH).fill(SiteState.CLOSED);
         this.siteState[this.TOP_VIRTUAL_SITE_INDEX] = SiteState.FULL;
         this.siteState[this.BOTTOM_VIRTUAL_SITE_INDEX] = SiteState.OPEN;
@@ -159,7 +156,7 @@ class Percolation extends eventemitter3_1.EventEmitter {
         return this.siteState;
     }
     reset() {
-        this.sites = new data_structures_1.WeightedQuickUnion(this.ROWS * this.COLS + 2);
+        this.sites = new WeightedQuickUnion(this.ROWS * this.COLS + 2);
         this.siteState = new Array(this.ROWS * this.COLS + 2).fill(SiteState.CLOSED);
         this.siteState[this.TOP_VIRTUAL_SITE_INDEX] = SiteState.FULL;
         this.siteState[this.BOTTOM_VIRTUAL_SITE_INDEX] = SiteState.OPEN;
@@ -167,4 +164,4 @@ class Percolation extends eventemitter3_1.EventEmitter {
         this.nSitesFlooded = 1;
     }
 }
-exports.Percolation = Percolation;
+export { Percolation };

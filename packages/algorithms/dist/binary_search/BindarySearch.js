@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BinarySearch = void 0;
 /**
  * Binary search implementation for a sorted array.
  *
@@ -46,4 +43,4 @@ class BinarySearch {
         return -1;
     }
 }
-exports.BinarySearch = BinarySearch;
+export { BinarySearch };

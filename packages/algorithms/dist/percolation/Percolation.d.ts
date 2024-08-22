@@ -38,7 +38,10 @@ declare class Percolation extends EventEmitter {
         top: number | null;
         bottom: number | null;
     }>;
-    private getRowColsFromIndex;
+    getRowColsFromIndex(p: number): {
+        row: number;
+        col: number;
+    };
     isOpen(p: number): boolean;
     isPercolating(): boolean;
     isFull(p: number): boolean;

@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.InsertionSort = void 0;
 // [0...i-1] = sorted
 // i = element to insert in sorted list on left, needs to swap with i-1 until i-1 < i or i-1 >= 0
 // [i...n-1] = not sorted
@@ -21,4 +18,4 @@ function InsertionSort(values, comparator) {
         }
     }
 }
-exports.InsertionSort = InsertionSort;
+export { InsertionSort };

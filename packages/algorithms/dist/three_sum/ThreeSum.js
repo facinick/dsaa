@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ThreeSum = void 0;
-const binary_search_1 = require("../binary_search");
+import { BinarySearch } from "../binary_search";
 class ThreeSum {
     constructor(data, sum = 0) {
         this._data = data;
@@ -10,7 +7,7 @@ class ThreeSum {
     find() {
         const SORT_SEARCH_COMPARATOR = (p, q) => p < q ? -1 : p > q ? 1 : 0;
         this._data = this._data.sort(SORT_SEARCH_COMPARATOR);
-        const bs = new binary_search_1.BinarySearch(this._data, SORT_SEARCH_COMPARATOR);
+        const bs = new BinarySearch(this._data, SORT_SEARCH_COMPARATOR);
         const solutions = [];
         for (let i = 0; i < this._data.length; i++) {
             for (let j = i + 1; j < this._data.length; j++) {
@@ -24,4 +21,4 @@ class ThreeSum {
         return solutions;
     }
 }
-exports.ThreeSum = ThreeSum;
+export { ThreeSum };

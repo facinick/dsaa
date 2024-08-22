@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SelectionSort = void 0;
 /**
  * Sorts an array in place of numbers in order decided by a comparator function using the selection sort algorithm. O(n) = ~(N^2)/2
  *
@@ -26,7 +23,7 @@ function SelectionSort(values, comparator) {
         values[minimumIndex] = temp;
     }
 }
-exports.SelectionSort = SelectionSort;
+export { SelectionSort };
 // n:       6
 // index:  [0,1,2,3,4,5]
 // values: [4,5,8,2,3,1]
