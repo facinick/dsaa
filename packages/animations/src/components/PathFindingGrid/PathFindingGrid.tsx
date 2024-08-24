@@ -96,7 +96,7 @@ function getStartAndEndCells(grid: Cell[][]): {
     }
 }
 
-function getMoveCost(from: Cell, to: Cell) {
+function getMoveCost(_from: Cell, to: Cell) {
     return to.difficulty
 }
 
@@ -151,8 +151,8 @@ function isNodeTraversable(grid: Cell[][], from: Cell, node: Cell, allowDiagonal
     return true
 }
 
-function getCellId (grid: Cell[][], cell: Cell){
-    return cell.x * grid[0].length + cell.y
+function getCellId(grid: Cell[][], cell: Cell) {
+    return cell.x + cell.y * grid[0].length
 }
 
 interface PathFindingGridSettings {
@@ -161,9 +161,17 @@ interface PathFindingGridSettings {
     NODE_WIDTH?: number
     NODE_HEIGHT?: number
     REFRESH_INTERVAL_MS?: number
-    PATH_SPEED_MS?: number
-    FIND_SPEED_MS?: number
-    ALLOW_DIAGONAL?: boolean
+    pathAnimationSpeedMs?: number
+    algorithmSpeedMs?: number
+    allowDiagonalMovements?: boolean
+}
+
+enum AnimationState {
+    initialized = 'initialized',
+    pathFindStarted = 'pathFindStarted',
+    pathFindFinished = 'pathFindFinished',
+    pathAnimationStarted = 'pathAnimationStarted',
+    pathAnimationFinished = 'pathAnimationFinished',
 }
 
 export const PathFindingGrid = ({
@@ -172,32 +180,30 @@ export const PathFindingGrid = ({
     NODE_WIDTH = 30,
     NODE_HEIGHT = 30,
     REFRESH_INTERVAL_MS = 3000,
-    PATH_SPEED_MS = 200,
-    FIND_SPEED_MS = 10,
-    ALLOW_DIAGONAL = true
+    pathAnimationSpeedMs = 200,
+    algorithmSpeedMs = 10,
+    allowDiagonalMovements = true
 }: PathFindingGridSettings) => {
     const [nRows] = useState<number>(ROWS)
     const [nCols] = useState<number>(COLS)
     const [grid, setGrid] = useState<Cell[][]>(() => generateGrid(nRows, nCols))
+    const { from, to } = useMemo(() => getStartAndEndCells(grid), [grid])
+
+    const [currentNode, setCurrentNode] = useState<Cell | null>(null)
     const [openSet, setOpenSet] = useState<Cell[]>([])
     const [closedSet, setClosedSet] = useState<Set<Cell>>(new Set())
     const [path, setPath] = useState<Cell[]>([])
-    const [currentNode, setCurrentNode] = useState<Cell | null>(null)
 
-    const [hoveredId, setHoveredId] = useState<number | null>(null)
-
-    const [pathTraversed, setPathTraversed] = useState<boolean>(false)
-
-    const { from, to } = useMemo(() => getStartAndEndCells(grid), [grid])
+    const [state, setState] = useState<AnimationState>(AnimationState.initialized)
 
     // one iteration of pathFinding, algorithm moves from one cell to next cell
     const intervalRef = useRef<NodeJS.Timeout | null>(null)
-    
+    // how long after current round end, to restart everything
     const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     const pathBounds: { minX: number; maxX: number; minY: number; maxY: number } = useMemo(() => {
         if (path.length === 0) {
-            return { minX: -1, maxX: -1, minY: -1, maxY: -1 };
+            return { minX: -Infinity, maxX: Infinity, minY: -Infinity, maxY: Infinity };
         }
 
         let minX = path[0].x;
@@ -216,120 +222,134 @@ export const PathFindingGrid = ({
     }, [path])
 
     useEffect(() => {
-        const openSet: Heap<Cell> = new Heap()
-        const closedSet: Set<Cell> = new Set()
-        from.gCost = 0
-        from.hCost = getEstimatedMoveCost(from, to)
+        const startPathFinding = () => {
+            setState(AnimationState.pathFindStarted);
+            const openSet: Heap<Cell> = new Heap();
+            const closedSet: Set<Cell> = new Set();
 
-        openSet.push(from)
-        setOpenSet([...openSet])
+            from.gCost = 0;
+            from.hCost = getEstimatedMoveCost(from, to);
+            from.parent = null;
 
-        intervalRef.current = setInterval(() => {
+            openSet.push(from);
+            setOpenSet([...openSet]);
 
-            // Path doesn't exist
-            if (openSet.isEmpty()) {
-                clearInterval(intervalRef.current!)
-                intervalRef.current = null
-                refreshTimeoutRef.current = setTimeout(restart, REFRESH_INTERVAL_MS)
-                return
-            }
-
-            // current <-node in open with the lowerst fCost
-            // remove current from open
-            const currentNode = openSet.pop()!
-            setCurrentNode(currentNode)
-            setOpenSet([...openSet])
-            // remove current to closed
-            closedSet.add(currentNode)
-            setClosedSet(new Set(closedSet))
-
-            // if current is the target node // path has been fonud
-            if (currentNode === to) {
-                clearInterval(intervalRef.current!)
-                intervalRef.current = null
-                // Reconstruct path
-                const path: Cell[] = []
-                let temp: Cell | null = currentNode
-                while (temp !== null) {
-                    path.push(temp)
-                    temp = temp.parent
-                }
-                animatePath(path.reverse())
-                return
-            }
-
-            const neighbors = getNeighbourNodes(grid, currentNode, ALLOW_DIAGONAL)
-            // for each neighbor of the current node
-            for (const neighbor of neighbors) {
-                // if neighbor is not traversable or neighbour is in closed
-                if (closedSet.has(neighbor) || !isNodeTraversable(grid, currentNode, neighbor, ALLOW_DIAGONAL)) {
-                    // skip to the next neighbor
-                    continue
+            intervalRef.current = setInterval(() => {
+                // Path doesn't exist
+                if (openSet.isEmpty()) {
+                    setState(AnimationState.pathFindFinished);
+                    clearInterval(intervalRef.current!);
+                    intervalRef.current = null;
+                    refreshTimeoutRef.current = setTimeout(reset, REFRESH_INTERVAL_MS);
+                    return;
                 }
 
-                // new path to neighbor
-                const newMovementCostToNeighbor = currentNode.gCost + getMoveCost(currentNode, neighbor)
-                
-                // new path to neighbor is shorter or neighbor is not in open
-                if (newMovementCostToNeighbor < neighbor.gCost || !openSet.contains(neighbor)) {
-                    
-                    neighbor.gCost = newMovementCostToNeighbor
-                    neighbor.hCost = getEstimatedMoveCost(neighbor, to)
-                    neighbor.parent = currentNode
+                // current <-node in open with the lowest fCost
+                // remove current from open
+                const currentNode = openSet.pop()!;
+                setCurrentNode(currentNode);
+                setOpenSet([...openSet]);
+                // remove current to closed
+                closedSet.add(currentNode);
+                setClosedSet(new Set(closedSet));
 
-                    // if neighbor is not in open
-                    if (!openSet.contains(neighbor)) {
-                        // add neighbor to open
-                        openSet.push(neighbor)
-                        setOpenSet([...openSet])
-                    } 
-                    
-                    // need to update its properties in the heap
-                    else {
-                        openSet.updateItem(neighbor)
-                        setOpenSet([...openSet])
+                // if current is the target node // path has been found
+                if (currentNode === to) {
+                    setState(AnimationState.pathFindFinished);
+                    clearInterval(intervalRef.current!);
+                    intervalRef.current = null;
+                    // Reconstruct path
+                    const path: Cell[] = [];
+                    for (let temp: Cell | null = currentNode; temp; temp = temp.parent) {
+                        path.push(temp);
+                    }
+
+                    animatePath(path.reverse());
+                    return;
+                }
+
+                const neighbors = getNeighbourNodes(grid, currentNode, allowDiagonalMovements);
+                // for each neighbor of the current node
+                for (const neighbor of neighbors) {
+                    // if neighbor is not traversable or neighbour is in closed
+                    if (closedSet.has(neighbor) || !isNodeTraversable(grid, currentNode, neighbor, allowDiagonalMovements)) {
+                        // skip to the next neighbor
+                        continue;
+                    }
+
+                    // new path to neighbor
+                    const newMovementCostToNeighbor = currentNode.gCost + getMoveCost(currentNode, neighbor);
+
+                    // new path to neighbor is shorter or neighbor is not in open
+                    if (newMovementCostToNeighbor < neighbor.gCost || !openSet.contains(neighbor)) {
+
+                        neighbor.gCost = newMovementCostToNeighbor;
+                        neighbor.hCost = getEstimatedMoveCost(neighbor, to);
+                        neighbor.parent = currentNode;
+
+                        // if neighbor is not in open
+                        if (!openSet.contains(neighbor)) {
+                            // add neighbor to open
+                            openSet.push(neighbor);
+                        }
+                        // need to update its properties in the heap
+                        else {
+                            openSet.updateItem(neighbor);
+                        }
+                        setOpenSet([...openSet]);
                     }
                 }
-            }
-        }, FIND_SPEED_MS)
+            }, algorithmSpeedMs);
+        };
 
+        setTimeout(startPathFinding, 1000);
+
+        // Cleanup on unmount or effect re-run
         return () => {
             if (intervalRef.current) {
-                clearInterval(intervalRef.current)
-                intervalRef.current = null
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
             }
-        }
-    }, [from, to, grid])
+            if (refreshTimeoutRef.current) {
+                clearTimeout(refreshTimeoutRef.current);
+                refreshTimeoutRef.current = null;
+            }
+        };
+    }, [from, to, grid]);
 
-    const restart = () => {
+    const reset = () => {
         setPath([])
         setGrid(generateGrid(nRows, nCols))
-        setPathTraversed(false)
+        setOpenSet([])
+        setClosedSet(new Set())
+        setCurrentNode(null)
+        setState(AnimationState.initialized)
     }
 
-    const animatePath = (path: Cell[]) => {
+    const animatePath = async (path: Cell[]) => {
         const timeouts = path.map((cell, index) => {
             return new Promise<void>((resolve) => {
                 setTimeout(() => {
                     setPath(prevPath => [...prevPath, cell]);
                     resolve();
-                }, index * PATH_SPEED_MS);
+                }, index * pathAnimationSpeedMs);
             });
         });
 
-        Promise.all(timeouts).then(() => {
-            setPathTraversed(true)
-            refreshTimeoutRef.current = setTimeout(restart, REFRESH_INTERVAL_MS)
-        })
+        setState(AnimationState.pathAnimationStarted)
+        await Promise.all(timeouts)
+        setState(AnimationState.pathAnimationFinished)
+
+        refreshTimeoutRef.current = setTimeout(reset, REFRESH_INTERVAL_MS)
     };
 
-    const isWithinSight = (x3: number, y3: number) => {
-        const { minX } = pathBounds
-        const { maxX } = pathBounds
-        const { minY } = pathBounds
-        const { maxY } = pathBounds
-        return x3 >= minX && x3 <= maxX && y3 >= minY && y3 <= maxY;
+    const isWithinFocus = (cell: Cell) => {
+        const { minX, maxX, minY, maxY } = pathBounds
+        return cell.x >= minX && cell.x <= maxX && cell.y >= minY && cell.y <= maxY;
     }
+
+    const pathFound = state === AnimationState.pathFindFinished
+    const animationFinished = state === AnimationState.pathAnimationFinished
 
     return (
         <div
@@ -337,95 +357,175 @@ export const PathFindingGrid = ({
             style={{
                 gridTemplateColumns: `repeat(${nCols}, ${NODE_WIDTH}px)`,
                 gridTemplateRows: `repeat(${nRows}, ${NODE_HEIGHT}px)`,
-                ...(pathTraversed && {
+                ...(animationFinished && {
                     filter: 'brightness(0.7)'
-                })
+                }),
+                width: nCols * NODE_WIDTH,
+                height: nRows * NODE_HEIGHT,
             }}
-            onMouseLeave={() => setHoveredId(null)}
         >
-            {grid.map((row, rowIndex) => (
-                row.map((cell, cellInxex) => {
+            {/* Render Terrain */}
+            {grid.flat().map((cell) => (
+                <motion.div
+                    data-id={getCellId(grid, cell)}
+                    key={getCellId(grid, cell)}
+                    className={styles.cell}
+                    data-terrain-cost={cell.difficulty}
+                    data-x={cell.x}
+                    data-y={cell.y}
+                    style={{
+                        top: cell.y * NODE_HEIGHT,
+                        left: cell.x * NODE_WIDTH,
+                        width: NODE_WIDTH,
+                        height: NODE_HEIGHT,
+                        zIndex: 0.96
+                    }}
+                    animate={{
+                        scale: isWithinFocus(cell) && animationFinished ? 0.96 : 0.86,
+                        backgroundColor: animationFinished && !isWithinFocus(cell) ? 'rgb(14,14,14)' : getBackgroundColor(cell.difficulty),
+                    }}
+                />
+            ))}
+            {/* Render Open Cells */}
+            {!animationFinished && openSet.map(cell => (
+                <motion.div
+                    data-id={`${getCellId(grid, cell)}-open`}
+                    key={`${getCellId(grid, cell)}-open`}
+                    className={styles.cell}
+                    style={{
+                        top: cell.y * NODE_HEIGHT,
+                        left: cell.x * NODE_WIDTH,
+                        width: NODE_WIDTH,
+                        height: NODE_HEIGHT,
+                        zIndex: 2,
+                        scale: 0.86,
+                    }}
+                    animate={{
+                        backgroundColor: 'rgb(179, 19, 18)',
+                    }}
+                />
+            ))}
+            {/* Render Closed Cells */}
+            {!animationFinished && Array.from(closedSet).map(cell => (
+                <motion.div
+                    data-id={`${getCellId(grid, cell)}-closed`}
+                    key={`${getCellId(grid, cell)}-closed`}
+                    className={styles.cell}
+                    style={{
+                        top: cell.y * NODE_HEIGHT,
+                        left: cell.x * NODE_WIDTH,
+                        width: NODE_WIDTH,
+                        height: NODE_HEIGHT,
+                        zIndex: 2,
+                        scale: 0.86,
+                    }}
+                    animate={{
+                        backgroundColor: 'rgb(179, 19, 18)',
+                    }}
+                />
+            ))}
+            {/* Render Path Cells */}
+            {
+                path.map(cell => {
+                    const isFrom = cell.x === from.x && cell.y === from.y;
+                    const isTo = cell.x === to.x && cell.y === to.y;
 
-                    const isFrom = from.x === cell.x && from.y === cell.y
-                    const isTo = to.x === cell.x && to.y === cell.y
-
-                    const isInPath = path.some(p => p.x === cell.x && p.y === cell.y)
-
-                    const isOpen = openSet.some(p => p.x === cell.x && p.y === cell.y)
-                    const isClosed = closedSet.has(cell)
-                    const isCurrent = cell.x === currentNode?.x && currentNode?.y === cell.y
-
-                    const isHovered = hoveredId === getCellId(grid, cell)
-
-                    const isDim = !isFrom && !isTo && !isInPath && pathTraversed && !isWithinSight(cell.x, cell.y) && cell.difficulty !== 1
-
-                    let backgroundColor = getBackgroundColor(cell.difficulty)
-                    let color = cell.difficulty > 0.5 ? 'rgb(255,255,255)' : 'rgb(0,0,0)'
-                    let scale = 0.8
-                    const borderRadius = 0
-
-                    if (isOpen && !pathTraversed) {
-                        backgroundColor = 'rgb(179, 19, 18)'
-                        color = 'rgb(255,255,255)'
-                    }
-
-                    if (isClosed && !pathTraversed) {
-                        backgroundColor = 'rgb(179, 19, 18)'
-                        color = 'rgb(255,255,255)'
-                    }
-
-                    if (isInPath) {
-                        backgroundColor = 'rgb(255, 255, 255)'
-                        color = 'rgb(0,0,0)'
-                    }
-
-                    if (isCurrent) {
-                        backgroundColor = 	'rgb(255,192,203)'
-                        color = 'rgb(255,255,255)'
-                    }
-
-                    if (isFrom) {
-                        backgroundColor = 'rgb(132, 94, 237)'
-                        color = 'rgb(255,255,255)'
-                    }
-
-                    if (isTo) {
-                        backgroundColor = 'rgb(85, 182, 133)'
-                        color = 'rgb(255,255,255)'
-                    }
-
-                    if (isDim) {
-                        backgroundColor = 'rgb(14,14,14)'
-                        color = 'rgb(255,255,255)'
-                    }
-
-                    if(isInPath && !isDim) {
-                        scale = 1
-                    }
-
-                    if(pathTraversed && !isDim) {
-                        scale = 1
-                    }
+                    const backgroundColor = isFrom ? 'rgb(132, 94, 237)' : isTo ? 'rgb(85, 182, 133)' : 'rgb(255, 255, 255)';
 
                     return (
                         <motion.div
-                            onMouseEnter={() => setHoveredId(getCellId(grid, cell))}
+                            data-id={`${getCellId(grid, cell)}-path`}
+                            key={`${getCellId(grid, cell)}-path`}
                             className={styles.cell}
-                            key={getCellId(grid, cell)}
-                            data-id={getCellId(grid, cell)}
-                            data-terrain-cost={cell.difficulty}
-                            data-x={cell.x}
-                            data-y={cell.y}
-                            animate={{
-                                scale,
+                            style={{
                                 backgroundColor,
-                                borderRadius,
+                                top: cell.y * NODE_HEIGHT,
+                                left: cell.x * NODE_WIDTH,
+                                width: NODE_WIDTH,
+                                height: NODE_HEIGHT,
+                                zIndex: 3
                             }}
-                        >
-                        </motion.div>
+                            initial={{
+                                scale: 0.86
+                            }}
+                            animate={{
+                                scale: 0.96,
+                                backgroundColor
+                            }}
+                        />
                     )
                 })
-            ))}
+            }
+            {/* Render Current Cell */}
+            {currentNode && (
+                <motion.div
+                    data-id={`${getCellId(grid, currentNode)}-current`}
+                    key={`${getCellId(grid, currentNode)}-current`}
+                    className={styles.cell}
+                    style={{
+                        top: currentNode.y * NODE_HEIGHT,
+                        left: currentNode.x * NODE_WIDTH,
+                        width: NODE_WIDTH,
+                        height: NODE_HEIGHT,
+                        zIndex: 4,
+                        scale: 0.86,
+                    }}
+                    animate={{
+                        backgroundColor: 'rgb(255,192,203)',
+                    }}
+                />
+            )}
+            {/* Render From Cell */}
+            {from && (
+                <motion.div
+                    data-id={`from`}
+                    key={`from`}
+                    className={styles.cell}
+                    style={{
+                        top: from.y * NODE_HEIGHT,
+                        left: from.x * NODE_WIDTH,
+                        width: NODE_WIDTH,
+                        height: NODE_HEIGHT,
+                        zIndex: 5
+                    }}
+                    animate={{
+                        scale: pathFound ? 0.96 : 0.86,
+                        top: from.y * NODE_HEIGHT,
+                        left: from.x * NODE_WIDTH,
+                        rotate: [90, -90][from.x % 2],
+                        backgroundColor: 'rgb(132, 94, 237)',
+                    }}
+                />
+            )}
+            {/* Render To Cell */}
+            {to && (
+                <motion.div
+                    data-id={`to`}
+                    key={`to`}
+                    className={styles.cell}
+                    style={{
+                        top: to.y * NODE_HEIGHT,
+                        left: to.x * NODE_WIDTH,
+                        width: NODE_WIDTH,
+                        height: NODE_HEIGHT,
+                        zIndex: 5,
+                    }}
+                    animate={{
+                        scale: pathFound ? 0.96 : 0.86,
+                        top: to.y * NODE_HEIGHT,
+                        left: to.x * NODE_WIDTH,
+                        rotate: [90, -90][to.x % 2],
+                        backgroundColor: 'rgb(85, 182, 133)',
+                    }}
+                />
+            )}
+            {/* <div style={{
+                position: 'absolute',
+                zIndex: 6,
+                background: 'black'
+            }}>
+                {state}
+            </div> */}
         </div >
     )
 }

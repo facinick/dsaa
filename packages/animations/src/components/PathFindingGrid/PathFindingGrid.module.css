@@ -1,4 +1,9 @@
 .gridContainer {
   display: grid;
-  gap: 1px;
+  position: relative;
+  background-color: hsl(222.2 84% 4.9%);
+}
+
+.cell {
+  position: absolute;
 }

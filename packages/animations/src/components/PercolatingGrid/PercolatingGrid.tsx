@@ -2,7 +2,6 @@ import { Percolation, SiteState } from 'algorithms';
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getRandomIntBetween } from 'utils';
 import { GridNode } from "./Node";
-import { Card } from '../ui/card';
 
 const SETTINGS = {
   ROWS: 20,
@@ -23,8 +22,6 @@ export const PercolatingGrid = (): JSX.Element => {
   const [id, setId] = useState<Array<number>>(() => percolation.getData());
   const [siteState, setSiteState] = useState<Array<SiteState>>(() => percolation.getSiteState());
 
-  const GRID_WIDTH = SETTINGS.NODE_WIDTH * nCols;
-  const GRID_HEIGHT = SETTINGS.NODE_HEIGHT * nRows;
   const [flooding, setFlooding] = useState<Array<boolean>>(() => {
     return percolation.getSiteState().map((siteState => siteState === SiteState.FULL ? true : false));
   });

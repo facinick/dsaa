@@ -37,14 +37,14 @@ export function Dashboard() {
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <LineChart className="h-4 w-4" />
-                A* Algorithm
+                A* Grid Search
               </Link>
               <Link
                 to="/percolating-grid"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Users className="h-4 w-4" />
-                Percolating grid
+                Percolating Grid
               </Link>
             </nav>
           </div>
@@ -93,7 +93,7 @@ export function Dashboard() {
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
                 >
                   <ShoppingCart className="h-5 w-5" />
-                  A* Algorithm
+                  A* Grid Search
                 </Link>
                 <Link
                   to="/percolating-grid"
